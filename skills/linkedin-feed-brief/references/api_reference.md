@@ -22,13 +22,17 @@ Exclude if any of the following match:
 - Obvious module text (only if you must fall back to text heuristics):
   - “Jobs recommended for you”
   - “See who’s hiring”
+- Employment / job-change posts (do **not** count toward N):
+  - Korean keywords (best-effort): `취업`, `이직`, `퇴사`, `입사`, `합류`, `새 직장`, `새 역할`, `새 직책`, `새 포지션`
+  - English keywords (best-effort): “starting a new position”, “new role”, “I’m happy to share”, “I’m excited to share”, “joined”, “join … as”, “open to work”, “seeking opportunities”
+  - Notes:
+    - This filter is intentionally conservative; if LinkedIn UI changes, prefer updating selectors/snippets first.
+    - When in doubt, exclude obvious “I joined / I resigned / I’m open to work” style posts rather than miscounting N.
 
 ## Fixed categories (suggested)
 
-- AI
-- Software Engineering
-- Robotics
-- Finance
+- AI/ Software Engineering
+- Finance/ Economy
 - Career
 - Sales/ Marketing
 - Essay

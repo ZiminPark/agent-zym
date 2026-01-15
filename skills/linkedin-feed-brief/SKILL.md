@@ -42,6 +42,7 @@ If collection returns 0 or times out:
 
 - Exclude “Promoted” posts.
 - Exclude non-post modules like job cards and in-app promotions.
+- Exclude Employment / job-change posts and **do not count them toward N**.
 - Apply rules in `references/api_reference.md`.
 
 ### 5) Normalize links (required)
@@ -57,11 +58,11 @@ If collection returns 0 or times out:
   - Otherwise, write the brief in English.
 - Save the final brief to a `.txt` file (in addition to printing it in chat).
 - For each category:
-  - `Keywords`: 3–7 items, **plain text only** (no emojis inside the keyword list). Use ` · ` as the separator.
+  - `Keywords`: 3–5 items, **plain text only** (no emojis inside the keyword list). Use ` · ` as the separator.
   - Emoji rule: Put **one** emoji before the `Keywords:` label (e.g. `🧠 Keywords:`) and **do not reuse** that emoji across categories within the same brief.
     - Example: `🧠 Keywords: k1 · k2 · k3`, `🧰 Keywords: k1 · k2 · k3`, `📈 Keywords: k1 · k2 · k3`
   - Category naming rule:
-    - If the category is `ETC`, include a best-guess candidate label in parentheses (e.g., `🧩 ETC(Contents)`).
+    - If the category is `ETC`, include a best-guess candidate label in parentheses.
   - Post numbering rule:
     - Number posts **within each category** as `1)`, `2)`, `3)`... and restart numbering at `1)` for each new category.
   - For each post: `Title` + `Author` + `Posted Date` + `1~2 sentence summary` + `Link`

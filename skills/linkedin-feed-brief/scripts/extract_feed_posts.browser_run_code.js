@@ -32,6 +32,22 @@ async (page) => {
     return false;
   };
 
+  // Exclude employment/job-change posts and do not count them toward N.
+  // Best-effort heuristics; keep conservative to avoid miscounting.
+  const isEmploymentOrJobChangePost = (text) => {
+    if (!text) return false;
+    const t = String(text).toLowerCase();
+
+    // English
+    const enPatterns = [
+      /\bstarting a new position\b/i,
+      /\bstart(ing)? a new role\b/i,
+      /\b(open to work|seeking opportunities)\b/i,
+      /\b(i|we)\s+(joined|join)\b/i
+    ];
+    return enPatterns.some((re) => re.test(text));
+  };
+
   const pad2 = (n) => String(n).padStart(2, "0");
 
   // System timezone (browser local). Format: YYYY-MM-DD HH:mm
@@ -147,6 +163,7 @@ async (page) => {
       if (!p?.urn || !p.author || !p.text) continue;
       if (p.promoted) continue;
       if (isBadUrn(p.urn)) continue;
+      if (isEmploymentOrJobChangePost(p.text)) continue;
 
       if (!collected.has(p.urn)) {
         const relative = p.subDescHidden || p.subDescVisible || null;
