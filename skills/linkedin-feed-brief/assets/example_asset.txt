@@ -5,10 +5,10 @@
 🧩 Category
 
 🧠 Keywords: k1 · k2 · k3 · ...
-# Title 
+1) Title (Author, Posted Date)
 - 1~2 sentence summary
 (link)
 
-# Title
-- Title / Key Insight / Link
+2) Title (Author, Posted Date)
+- 1~2 sentence summary
 (link)
