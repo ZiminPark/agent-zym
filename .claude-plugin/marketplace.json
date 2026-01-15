@@ -9,7 +9,7 @@
     {
       "name": "linkedin-feed-brief",
       "description": "Collect and summarize LinkedIn home feed posts using the Playwright MCP.",
-      "source": "plugin/linkedin-feed-brief"
+      "source": "plugins/linkedin-feed-brief"
     }
   ]
 }
