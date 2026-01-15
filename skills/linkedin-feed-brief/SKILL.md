@@ -8,7 +8,7 @@ description: Collect and summarize LinkedIn home feed posts using the Playwright
 ## Goal
 
 Collect up to N LinkedIn feed posts reliably (collection is primary), filter out ads/modules, and output a brief in the user’s format:
-`<전체 제목>` then `(카테고리(키워드 + (핵심 제목 + 핵심 인사이트 + 링크)*N))*M`.
+`<Overall Title>` then `(Category(Keywords + (Title + Author + Posted Date + Summary + Link)*N))*M`.
 
 Title guidance:
 - Create a witty, feed-wide umbrella title, **or** pick one hooky theme that would make people stop scrolling on SNS.
@@ -52,23 +52,35 @@ If collection returns 0 or times out:
 ### 6) Write the brief (secondary)
 
 - Categorize posts using the fixed taxonomy in `references/api_reference.md`.
+- Choose the output language based on the dominant language of the collected posts:
+  - If the majority of posts are written in Korean, write the brief in Korean.
+  - Otherwise, write the brief in English.
 - For each category:
-  - `키워드`: 3–7 items, **plain text only** (no emojis inside the keyword list). Use ` · ` as the separator.
-  - Emoji rule: Put **one** emoji before the `키워드:` label (e.g. `🧠 키워드:`) and **do not reuse** that emoji across categories within the same brief.
-    - Example: `🧠 키워드: k1 · k2 · k3`, `🧰 키워드: k1 · k2 · k3`, `📈 키워드: k1 · k2 · k3`
-  - For each post: `핵심 제목` + `핵심 인사이트` + `링크`
+  - `Keywords`: 3–7 items, **plain text only** (no emojis inside the keyword list). Use ` · ` as the separator.
+  - Emoji rule: Put **one** emoji before the `Keywords:` label (e.g. `🧠 Keywords:`) and **do not reuse** that emoji across categories within the same brief.
+    - Example: `🧠 Keywords: k1 · k2 · k3`, `🧰 Keywords: k1 · k2 · k3`, `📈 Keywords: k1 · k2 · k3`
+  - For each post: `Title` + `Author` + `Posted Date` + `1~2 sentence summary` + `Link`
+    - Posted Date rule:
+      - If the feed only provides relative times (e.g. `18h`, `4 days ago`), convert it to an **absolute local timestamp** by comparing against the script execution time, using the **system timezone** by default (unless the user specifies otherwise).
+      - Output `Posted Date` as absolute when possible (e.g. `2026-01-15 09:42`); otherwise fall back to relative (e.g. `4 days ago`).
 - Use `assets/example_asset.txt` as the output shape.
 
 ## Output format (must match)
 
 ```
-<전체 제목>
+<Overall Title>
 
-🧩 카테고리명
+🧩 Category Name
 
-🧠 키워드: k1 · k2 · k3 · ...
-- 핵심 제목 / 핵심 인사이트 / 링크
-- ...
+🧠 Keywords: k1 · k2 · k3 · ...
+# Title (Author, Posted Date)
+- 1~2 sentence summary
+(link)
+
+# Title (Author, Posted Date)
+- 1~2 sentence summary
+(link)
+...
 ```
 
 ## Notes / Guardrails

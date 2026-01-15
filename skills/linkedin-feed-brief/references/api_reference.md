@@ -14,7 +14,7 @@ This reference backs the `linkedin-feed-brief` skill.
 
 Exclude if any of the following match:
 
-- Label text equals `Promoted` (also accept `홍보`, `스폰서`)
+- Label text equals `Promoted` (also accept common non-English equivalents, e.g., Korean UI labels)
 - URN patterns:
   - `urn:li:inAppPromotion:*`
   - `urn:li:jobPosting:*`
@@ -25,13 +25,15 @@ Exclude if any of the following match:
 
 ## Fixed categories (suggested)
 
-- AI 업계 동향/큐레이션
-- 커리어
-- 전략/운영
-- 마케팅
-- 사회
-- 마인드셋/에세이
-- 스타트업
+- AI
+- Software Engineering
+- Robotics
+- Finance
+- Career
+- Sales/ Marketing
+- Essay
+- StartUp
+- Event
 - ETC
 
 ## Troubleshooting

@@ -1,9 +1,14 @@
 # Output template
 
-<전체 제목>
+<Overall Title>
 
-🧩 카테고리명
+🧩 Category
 
-🧠 키워드: k1 · k2 · k3 · ...
-- 핵심 제목 / 핵심 인사이트 / 링크
-- 핵심 제목 / 핵심 인사이트 / 링크
+🧠 Keywords: k1 · k2 · k3 · ...
+# Title 
+- 1~2 sentence summary
+(link)
+
+# Title
+- Title / Key Insight / Link
+(link)
