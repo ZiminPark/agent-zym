@@ -1,0 +1,10 @@
+{
+    "name": "agent-zym",
+    "version": "1.0.0",
+    "description": "The place where agents go to work out.",
+    "author": {
+        "name": "Zimmy",
+        "url": "https://github.com/ZiminPark"
+    },
+    "repository": "https://github.com/ZiminPark/agent-zym"
+}

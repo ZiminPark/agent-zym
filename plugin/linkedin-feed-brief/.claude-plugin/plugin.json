@@ -1,6 +1,6 @@
 {
   "name": "linkedin-feed-brief",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Collect and summarize LinkedIn home feed posts using the Playwright MCP.",
   "author": "ZiminPark",
   "readme": "README.md",
@@ -11,6 +11,7 @@
     "playwright",
     "mcp"
   ],
-  "skills": ["./"]
+  "skills": [
+    "./skills/linkedin-feed-brief"
+  ]
 }
-
