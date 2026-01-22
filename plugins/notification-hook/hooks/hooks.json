@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c \"import json, sys, subprocess; d=json.load(sys.stdin); subprocess.run(['terminal-notifier', '-title', f\\\"{d['cwd']} - {d['notification_type']}\\\", '-message', d['message']])\""
+          }
+        ]
+      }
+    ]
+  }
+}

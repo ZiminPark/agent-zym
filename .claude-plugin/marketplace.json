@@ -11,6 +11,11 @@
       "name": "linkedin-feed-brief",
       "description": "Collect and summarize LinkedIn home feed posts using the Playwright MCP.",
       "source": "./plugins/linkedin-feed-brief"
+    },
+    {
+      "name": "notification-hook",
+      "description": "macOS terminal-notifier hook for Claude Code notifications.",
+      "source": "./plugins/notification-hook"
     }
   ]
 }
