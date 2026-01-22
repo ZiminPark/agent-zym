@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 -c \"import json, sys, subprocess, os; d=json.load(sys.stdin); subprocess.run(['terminal-notifier', '-title', f\\\"{os.path.basename(d['cwd'])} - {d['notification_type']}\\\", '-message', d['message']])\""
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/notify.sh"
           }
         ]
       }
