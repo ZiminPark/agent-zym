@@ -1,6 +1,6 @@
 {
   "name": "wedding-research",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "네이버 카페에서 키워드를 검색하고 후기를 분석하여 리포트를 생성합니다.",
   "author": {
     "name": "ZiminPark",

@@ -1,7 +1,7 @@
 ---
 name: wedding-research
 description: 네이버 카페에서 키워드를 검색하고 후기를 분석하여 리포트를 생성합니다
-argument-hint: [검색어] (--cafe [카페ID/URL/이름])
+argument-hint: "[검색어] (--cafe [카페ID/URL/이름])"
 allowed-tools: Bash, Write, Read
 ---
 
