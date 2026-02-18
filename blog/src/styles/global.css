@@ -86,3 +86,25 @@
 .prose li {
   margin-bottom: 0.5rem;
 }
+
+/* Harness card entrance animation — JS adds .harness-animate to hide cards before reveal */
+.harness-card.harness-animate {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.harness-card.harness-card-visible {
+  animation: harness-fade-up 0.6s ease-out forwards;
+}
+
+@keyframes harness-fade-up {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .harness-card.harness-animate { opacity: 1; transform: none; }
+  .harness-card.harness-card-visible { animation: none; }
+}
