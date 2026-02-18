@@ -17,36 +17,39 @@ const next = sectionIndex < sections.length - 1 ? sections[sectionIndex + 1] : n
 <HarnessLayout title={`${section.title} — Harness`} description={section.summary}>
   <article class="max-w-4xl mx-auto px-6 py-12">
     {/* Breadcrumb */}
-    <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-8">
-      <a href="/harness" class="hover:text-gray-900 dark:hover:text-white transition-colors">Harness</a>
+    <nav class="flex items-center gap-2 text-sm mb-8" style="color: var(--text-muted);">
+      <a href="/harness" class="link-underline transition-colors" style="color: var(--text-muted);">Harness</a>
       <span>/</span>
-      <span class="text-gray-900 dark:text-white">{section.title}</span>
+      <span style="color: var(--text);">{section.title}</span>
     </nav>
 
     {/* Header */}
     <header class="mb-12">
-      <span class="font-mono text-sm text-gray-400 dark:text-gray-500">
+      <span class="mono-label">
         {String(section.number).padStart(2, '0')}
       </span>
-      <h1 class={`text-4xl md:text-5xl font-bold mt-1 bg-gradient-to-r ${section.gradient} bg-clip-text text-transparent`}>
+      <h1 class={`display-heading text-4xl md:text-5xl mt-1 bg-gradient-to-r ${section.gradient} bg-clip-text text-transparent`}>
         {section.title}
       </h1>
-      <p class="mt-4 text-lg text-gray-500 dark:text-gray-400">{section.summary}</p>
+      <p class="mt-4 text-lg" style="color: var(--text-muted);">{section.summary}</p>
     </header>
 
     {/* Content */}
     <ol class="space-y-6">
       {section.items.map((item, i) => (
         <li class="flex gap-4">
-          <span class="flex-shrink-0 w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-sm font-semibold text-gray-600 dark:text-gray-300">
+          <span
+            class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold"
+            style="background: var(--bg-surface); color: var(--text-muted);"
+          >
             {i + 1}
           </span>
           <div class="pt-1">
-            <p class="text-gray-900 dark:text-gray-100 leading-relaxed">{item.text}</p>
+            <p class="leading-relaxed" style="color: var(--text);">{item.text}</p>
             {item.subItems && (
-              <ul class="mt-3 space-y-2 pl-4 border-l-2 border-gray-200 dark:border-gray-700">
+              <ul class="mt-3 space-y-2 pl-4" style="border-left: 2px solid var(--border);">
                 {item.subItems.map((sub) => (
-                  <li class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{sub}</li>
+                  <li class="text-sm leading-relaxed" style="color: var(--text-muted);">{sub}</li>
                 ))}
               </ul>
             )}
@@ -56,9 +59,9 @@ const next = sectionIndex < sections.length - 1 ? sections[sectionIndex + 1] : n
     </ol>
 
     {/* Prev/Next Navigation */}
-    <nav class="mt-16 pt-8 border-t border-gray-200 dark:border-gray-800 flex justify-between">
+    <nav class="mt-16 pt-8 flex justify-between" style="border-top: 1px solid var(--border);">
       {prev ? (
-        <a href={`/harness/${prev.slug}`} class="group flex items-center gap-2 text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors">
+        <a href={`/harness/${prev.slug}`} class="group flex items-center gap-2 transition-colors" style="color: var(--text-muted);">
           <svg class="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
           </svg>
@@ -66,7 +69,7 @@ const next = sectionIndex < sections.length - 1 ? sections[sectionIndex + 1] : n
         </a>
       ) : <div />}
       {next ? (
-        <a href={`/harness/${next.slug}`} class="group flex items-center gap-2 text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors">
+        <a href={`/harness/${next.slug}`} class="group flex items-center gap-2 transition-colors" style="color: var(--text-muted);">
           <span class="text-sm">{next.title}</span>
           <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
