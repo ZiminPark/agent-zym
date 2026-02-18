@@ -1,17 +1,29 @@
 ---
 ---
 
-<footer class="mt-16 border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
-  <div class="container mx-auto px-4 py-8 max-w-4xl">
-    <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
-      <p>
-        &copy; {new Date().getFullYear()} agent-zym. All rights reserved.
-      </p>
-      <div class="flex gap-6">
-        <a href="https://github.com/ZiminPark/agent-zym" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+<footer class="mt-24">
+  <div class="mx-auto max-w-5xl px-6">
+    <div style="height: 1px; background: var(--border);"></div>
+  </div>
+  <div class="mx-auto max-w-5xl px-6 py-10">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+      <div>
+        <span class="display-heading text-lg" style="color: var(--text);">agent-zym</span>
+        <p class="mt-1" style="font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.05em; color: var(--text-subtle);">
+          &copy; {new Date().getFullYear()}
+        </p>
+      </div>
+      <div class="flex gap-8">
+        <a
+          href="https://github.com/ZiminPark/agent-zym"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="mono-label link-underline"
+          style="font-size: 0.6875rem;"
+        >
           GitHub
         </a>
-        <a href="/rss.xml" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+        <a href="/rss.xml" class="mono-label link-underline" style="font-size: 0.6875rem;">
           RSS Feed
         </a>
       </div>

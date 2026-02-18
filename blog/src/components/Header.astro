@@ -2,23 +2,21 @@
 import ThemeToggle from './ThemeToggle.astro';
 ---
 
-<header class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800">
-  <nav class="container mx-auto px-4 py-4 flex items-center justify-between max-w-4xl">
-    <a href="/" class="text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-      agent-zym
+<header class="sticky top-0 z-50 backdrop-blur-md" style="background-color: color-mix(in srgb, var(--bg) 85%, transparent);">
+  <nav class="mx-auto max-w-5xl px-6 py-5 flex items-center justify-between">
+    <a href="/" class="group flex items-center gap-2">
+      <span class="display-heading text-xl tracking-tight" style="color: var(--text);">agent-zym</span>
+      <span class="inline-block w-2 h-2 rounded-full bg-accent opacity-80 group-hover:scale-125 transition-transform"></span>
     </a>
 
-    <div class="flex items-center gap-6">
-      <a href="/" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-        Home
-      </a>
-      <a href="/harness" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-        Harness
-      </a>
-<a href="/rss.xml" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-        RSS
-      </a>
+    <div class="flex items-center gap-8">
+      <a href="/" class="mono-label link-underline" style="font-size: 0.6875rem;">Home</a>
+      <a href="/harness" class="mono-label link-underline" style="font-size: 0.6875rem;">Harness</a>
+      <a href="/rss.xml" class="mono-label link-underline" style="font-size: 0.6875rem;">RSS</a>
       <ThemeToggle />
     </div>
   </nav>
+  <div class="mx-auto max-w-5xl px-6">
+    <div style="height: 1px; background: var(--border);"></div>
+  </div>
 </header>

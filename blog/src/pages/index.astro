@@ -8,7 +8,6 @@ const allPosts = await getCollection('posts', ({ data }) => {
   return data.draft !== true;
 });
 
-// Sort posts by date, newest first
 const posts = allPosts.sort((a, b) => {
   return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
 });
@@ -18,27 +17,33 @@ const posts = allPosts.sort((a, b) => {
   title="agent-zym | Claude Code Plugin Marketplace"
   description="A collection of plugins, skills, and automation tools for Claude Code and Codex"
 >
-  <div class="space-y-8">
-    <section class="text-center py-12">
-      <h1 class="text-5xl font-bold mb-4 text-gray-900 dark:text-white">
-        agent-zym
+  <div class="space-y-16">
+    <!-- Hero -->
+    <section class="pt-16 pb-8 stagger-in">
+      <p class="mono-label mb-4">Claude Code Plugin Marketplace</p>
+      <h1 class="display-heading text-6xl md:text-7xl lg:text-8xl leading-none" style="color: var(--text);">
+        agent<span style="color: var(--color-accent);">-</span>zym
       </h1>
-      <p class="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-        Claude Code Plugin Marketplace
+      <p class="mt-6 max-w-lg" style="color: var(--text-muted); font-size: 1.0625rem; line-height: 1.7;">
+        Plugins, skills, and automation tools that extend what Claude Code can do.
       </p>
     </section>
 
     <Search />
 
+    <!-- Posts -->
     <section>
-      <h2 class="text-3xl font-bold mb-6 text-gray-900 dark:text-white">Latest Posts</h2>
-      <div class="grid gap-6 md:grid-cols-2">
-        {posts.map((post) => <PostCard post={post} />)}
+      <div class="flex items-center justify-between mb-8">
+        <h2 class="display-heading text-3xl" style="color: var(--text);">Latest Posts</h2>
+        <span class="mono-label">{posts.length} {posts.length === 1 ? 'post' : 'posts'}</span>
+      </div>
+      <div>
+        {posts.map((post, i) => <PostCard post={post} index={i} />)}
       </div>
     </section>
 
     {posts.length === 0 && (
-      <p class="text-center text-gray-600 dark:text-gray-400">No posts yet. Check back soon!</p>
+      <p class="text-center" style="color: var(--text-muted);">No posts yet. Check back soon!</p>
     )}
   </div>
 </BaseLayout>

@@ -3,9 +3,10 @@ import { type CollectionEntry } from 'astro:content';
 
 interface Props {
   post: CollectionEntry<'posts'>;
+  index?: number;
 }
 
-const { post } = Astro.props;
+const { post, index = 0 } = Astro.props;
 const { title, description, pubDate, tags, image } = post.data;
 
 const formattedDate = new Date(pubDate).toLocaleDateString('en-US', {
@@ -15,34 +16,30 @@ const formattedDate = new Date(pubDate).toLocaleDateString('en-US', {
 });
 ---
 
-<article class="group bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700 overflow-hidden">
+<article class="post-card stagger-in" style={`animation-delay: ${index * 80}ms;`}>
   <a href={`/${post.slug}`} class="block">
-    {image && (
-      <div class="aspect-video overflow-hidden bg-gray-100 dark:bg-gray-700">
-        <img
-          src={image}
-          alt={title}
-          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-        />
+    <div class="flex items-start justify-between gap-8">
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-4 mb-3">
+          <span class="card-date">{formattedDate}</span>
+          {tags && tags.length > 0 && (
+            <div class="flex gap-2">
+              {tags.slice(0, 3).map((tag) => (
+                <span class="tag-pill" style="padding: 0.125rem 0.5rem; font-size: 0.625rem;">{tag}</span>
+              ))}
+            </div>
+          )}
+        </div>
+        <h2 class="card-title">{title}</h2>
+        <p class="card-desc line-clamp-2">{description}</p>
       </div>
-    )}
-    <div class="p-6">
-      <h2 class="text-2xl font-bold mb-2 text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-        {title}
-      </h2>
-      <time datetime={pubDate.toISOString()} class="text-sm text-gray-600 dark:text-gray-400 mb-3 block">
-        {formattedDate}
-      </time>
-      <p class="text-gray-700 dark:text-gray-300 mb-4 line-clamp-3">
-        {description}
-      </p>
-      {tags && tags.length > 0 && (
-        <div class="flex flex-wrap gap-2">
-          {tags.map((tag) => (
-            <span class="px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded">
-              #{tag}
-            </span>
-          ))}
+      {image && (
+        <div class="hidden md:block flex-shrink-0 w-32 h-24 rounded-lg overflow-hidden" style="border: 1px solid var(--border);">
+          <img
+            src={image}
+            alt={title}
+            class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+          />
         </div>
       )}
     </div>

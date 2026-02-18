@@ -6,7 +6,6 @@ const allPosts = await getCollection('posts', ({ data }) => {
   return data.draft !== true;
 });
 
-// Count posts per tag
 const tagCounts = new Map<string, number>();
 allPosts.forEach((post) => {
   post.data.tags?.forEach((tag) => {
@@ -14,7 +13,6 @@ allPosts.forEach((post) => {
   });
 });
 
-// Sort tags by count (descending) then alphabetically
 const sortedTags = Array.from(tagCounts.entries()).sort((a, b) => {
   if (b[1] !== a[1]) return b[1] - a[1];
   return a[0].localeCompare(b[0]);
@@ -25,34 +23,25 @@ const sortedTags = Array.from(tagCounts.entries()).sort((a, b) => {
   title="Tags | agent-zym"
   description="Browse all tags on agent-zym blog"
 >
-  <div class="space-y-8">
-    <header>
-      <h1 class="text-4xl font-bold mb-4 text-gray-900 dark:text-white">
+  <div class="space-y-12">
+    <header class="stagger-in">
+      <p class="mono-label mb-4">Browse by topic</p>
+      <h1 class="display-heading text-5xl md:text-6xl" style="color: var(--text);">
         All Tags
       </h1>
-      <p class="text-gray-600 dark:text-gray-400">
-        Browse posts by topic
-      </p>
     </header>
 
-    <div class="flex flex-wrap gap-4">
+    <div class="flex flex-wrap gap-3 stagger-in" style="animation-delay: 100ms;">
       {sortedTags.map(([tag, count]) => (
-        <a
-          href={`/tags/${tag}`}
-          class="group px-6 py-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-all border border-gray-200 dark:border-gray-700"
-        >
-          <span class="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400">
-            #{tag}
-          </span>
-          <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">
-            ({count})
-          </span>
+        <a href={`/tags/${tag}`} class="tag-pill group" style="padding: 0.5rem 1rem; font-size: 0.75rem;">
+          <span>{tag}</span>
+          <span class="ml-2 opacity-50">{count}</span>
         </a>
       ))}
     </div>
 
     {sortedTags.length === 0 && (
-      <p class="text-center text-gray-600 dark:text-gray-400">No tags yet.</p>
+      <p style="color: var(--text-muted);">No tags yet.</p>
     )}
   </div>
 </BaseLayout>
