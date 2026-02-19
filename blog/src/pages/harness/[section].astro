@@ -1,5 +1,6 @@
 ---
 import HarnessLayout from '../../layouts/HarnessLayout.astro';
+import HarnessImage from '../../components/HarnessImage.astro';
 import { sections } from '../../data/harness';
 import type { GetStaticPaths } from 'astro';
 
@@ -45,7 +46,23 @@ const next = sectionIndex < sections.length - 1 ? sections[sectionIndex + 1] : n
             {i + 1}
           </span>
           <div class="pt-1">
-            <p class="leading-relaxed" style="color: var(--text);">{item.text}</p>
+            <div class="flex flex-col sm:flex-row sm:items-baseline gap-2">
+              <p class="leading-relaxed" style="color: var(--text);">{item.text}</p>
+              {item.link && (
+                <a 
+                  href={item.link} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-1 text-[11px] font-medium uppercase tracking-wider opacity-60 hover:opacity-100 transition-opacity whitespace-nowrap"
+                  style="color: var(--text-muted);"
+                >
+                  <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
+                  </svg>
+                  Reference
+                </a>
+              )}
+            </div>
             {item.subItems && (
               <ul class="mt-3 space-y-2 pl-4" style="border-left: 2px solid var(--border);">
                 {item.subItems.map((sub) => (
@@ -53,6 +70,7 @@ const next = sectionIndex < sections.length - 1 ? sections[sectionIndex + 1] : n
                 ))}
               </ul>
             )}
+            {item.image && <HarnessImage image={item.image} />}
           </div>
         </li>
       ))}

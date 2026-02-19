@@ -1,6 +1,15 @@
+export interface HarnessItemImage {
+  /** Filename in src/assets/harness/ (e.g. "session-management.png") */
+  src: string;
+  alt: string;
+  caption?: string;
+}
+
 export interface HarnessItem {
   text: string;
   subItems?: string[];
+  image?: HarnessItemImage;
+  link?: string;
 }
 
 export interface HarnessSection {
@@ -48,6 +57,12 @@ export const sections: HarnessSection[] = [
           "탭으로 나눈다",
           "탭에 이름을 넣고 필요할 때만 나중에 이어서 작업할 때만 세션에 이름을 부여한다.",
         ],
+        image: {
+          src: "session-management.png",
+          alt: "탭 기반 세션 관리 예시 — 각 탭에 작업 이름을 부여한 터미널 화면",
+          caption:
+            "탭에 이름을 넣고 필요할 때만 세션에 이름 부여",
+        },
       },
       {
         text: "Plugin을 쓰되 SKILL.md 를 공부하고 사용한다. + 자신의 입맛에 수정해서 쓴다.",
@@ -74,7 +89,8 @@ export const sections: HarnessSection[] = [
         ],
       },
       {
-        text: "Vague, Unknown 을 최대한 없앤다.",
+        text: "모호한(Vague) 내용을 구체화 하고, 미지의 영역(Unknown)을 수면 위로 올리고, 구현 수단(Medium)을 탐색한다.",
+        link: "https://github.com/team-attention/plugins-for-claude-natives/tree/main/plugins/clarify/skills",
       },
     ],
   },

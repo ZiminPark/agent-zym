@@ -1,0 +1,35 @@
+---
+import { Image } from 'astro:assets';
+import type { HarnessItemImage } from '../data/harness';
+
+interface Props {
+  image: HarnessItemImage;
+}
+
+const { image } = Astro.props;
+
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/harness/*.{png,jpg,jpeg,webp}',
+);
+
+const resolved = images[`/src/assets/harness/${image.src}`];
+---
+
+{resolved && (
+  <figure class="mt-4">
+    <Image
+      src={resolved()}
+      alt={image.alt}
+      widths={[640, 960, 1280]}
+      sizes="(max-width: 768px) 100vw, 720px"
+      class="rounded-lg w-full"
+      loading="lazy"
+      decoding="async"
+    />
+    {image.caption && (
+      <figcaption class="mt-2 text-xs text-center" style="color: var(--text-subtle);">
+        {image.caption}
+      </figcaption>
+    )}
+  </figure>
+)}
