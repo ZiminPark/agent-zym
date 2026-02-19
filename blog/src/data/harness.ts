@@ -189,6 +189,15 @@ export const sections: HarnessSection[] = [
         text: "버그 수정이 아닌 기능 추가 Spec 문서는 docs/ 또는 requirements/ 에 저장한다.",
       },
       {
+        text: "자동화는 slash command부터 시작한다. Sub agent, Skill, Hook을 처음부터 만들지 않는다.",
+        subItems: [
+          "반복되는 워크플로우가 보이면 /command (Custom Slash Command)부터 만든다.",
+          "자주 쓰는 command가 Claude 판단으로 자동 실행되어야 하면 Skill로 승격한다.",
+          "도구 실행 전후에 매번 돌아야 하는 규칙이면 Hook으로 만든다.",
+          "컨텍스트 격리가 필요하면 그때 Sub agent를 쓴다.",
+        ],
+      },
+      {
         text: "\"이번에 에이전트가 멍청하게 행동한 부분이 어디인가?\" → 오답 노트 추가",
       },
       {

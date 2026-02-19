@@ -4,7 +4,7 @@ import HarnessImage from '../../components/HarnessImage.astro';
 import { sections, references } from '../../data/harness';
 
 function highlight(text: string): string {
-  return text.replace(/읽는다/g, '<mark class="harness-highlight">읽는다</mark>');
+  return text.replace(/읽는다|읽고 이해한다/g, (m) => `<mark class="harness-highlight">${m}</mark>`);
 }
 ---
 

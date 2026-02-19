@@ -15,7 +15,7 @@ const prev = sectionIndex > 0 ? sections[sectionIndex - 1] : null;
 const next = sectionIndex < sections.length - 1 ? sections[sectionIndex + 1] : null;
 
 function highlight(text: string): string {
-  return text.replace(/읽는다/g, '<mark class="harness-highlight">읽는다</mark>');
+  return text.replace(/읽는다|읽고 이해한다/g, (m) => `<mark class="harness-highlight">${m}</mark>`);
 }
 ---
 
