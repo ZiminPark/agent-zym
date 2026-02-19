@@ -353,6 +353,17 @@ a {
   margin: 2.5rem 0;
 }
 
+/* ─── Harness highlight ─── */
+.harness-highlight {
+  background: none;
+  color: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+}
+
 /* ─── Harness card entrance animation ─── */
 .harness-card.harness-animate {
   opacity: 0;

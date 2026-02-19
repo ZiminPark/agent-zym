@@ -2,6 +2,10 @@
 import HarnessLayout from '../../layouts/HarnessLayout.astro';
 import HarnessImage from '../../components/HarnessImage.astro';
 import { sections, references } from '../../data/harness';
+
+function highlight(text: string): string {
+  return text.replace(/읽는다/g, '<mark class="harness-highlight">읽는다</mark>');
+}
 ---
 
 <HarnessLayout title="Harness — Full Guide" description="The complete coding agent workflow guide in one page">
@@ -66,7 +70,7 @@ import { sections, references } from '../../data/harness';
               </span>
               <div class="pt-0.5">
                 <div class="flex flex-col sm:flex-row sm:items-baseline gap-2">
-                  <p class="leading-relaxed" style="color: var(--text);">{item.text}</p>
+                  <p class="leading-relaxed" style="color: var(--text);" set:html={highlight(item.text)} />
                   {item.link && (
                     <a 
                       href={item.link} 
@@ -85,7 +89,7 @@ import { sections, references } from '../../data/harness';
                 {item.subItems && (
                   <ul class="mt-2.5 space-y-1.5 pl-4" style="border-left: 2px solid var(--border);">
                     {item.subItems.map((sub) => (
-                      <li class="text-sm leading-relaxed" style="color: var(--text-muted);">{sub}</li>
+                      <li class="text-sm leading-relaxed" style="color: var(--text-muted);" set:html={highlight(sub)} />
                     ))}
                   </ul>
                 )}
