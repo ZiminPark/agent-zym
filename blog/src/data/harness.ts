@@ -67,6 +67,13 @@ export const sections: HarnessSection[] = [
       {
         text: "Plugin을 쓰되 SKILL.md 를 공부하고 사용한다. + 자신의 입맛에 수정해서 쓴다.",
       },
+      {
+        text: "음성 입력을 적극 활용하여 타이핑 병목을 줄인다.",
+        subItems: [
+          "무선 핀 마이크를 사용하여 접근성과 활동성을 높인다.",
+          "Willow Voice와 같은 음성 인식 도구를 활용한다.",
+        ],
+      },
     ],
   },
   {
