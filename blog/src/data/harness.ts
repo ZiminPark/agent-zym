@@ -193,7 +193,7 @@ export const sections: HarnessSection[] = [
     gradient: "from-indigo-600 to-blue-500",
     items: [
       {
-        text: "버그 수정이 아닌 기능 추가 Spec 문서는 docs/ 또는 requirements/ 에 저장한다.",
+        text: "버그 수정 문서는 docs/bug-fix/ 하위 경로에 저장하고, 버그 수정이 아닌 기능 추가 Spec 문서는 docs/ 또는 requirements/ 에 저장한다.",
       },
       {
         text: "자동화는 slash command부터 시작한다. Sub agent, Skill, Hook을 처음부터 만들지 않는다.",
@@ -205,13 +205,10 @@ export const sections: HarnessSection[] = [
         ],
       },
       {
-        text: "\"이번에 에이전트가 멍청하게 행동한 부분이 어디인가?\" → 오답 노트 추가",
-      },
-      {
         text: "\"내가 말해주지 않았으면 에이전트가 몰랐을 내 취향은 무엇인가?\" → 취향(Taste) 문서화",
       },
       {
-        text: "\"이 문제는 나중에도 또 발생할 것 같은가?\" → 해결책(Solution) 저장 또는 린터 추가",
+        text: "\"이번에 에이전트가 멍청하게 행동한 부분이 어디인가?\" + \"이 문제는 나중에도 또 발생할 것 같은가?\" → 오답 노트와 해결책(Solution)을 함께 저장하고 필요시 린터를 추가한다.",
       },
     ],
   },
