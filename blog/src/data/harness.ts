@@ -47,8 +47,8 @@ export const sections: HarnessSection[] = [
         ],
       },
       {
-        text: "CLAUDE.md (AGENTS.MD) 는 목차(Table of Contents)로만 쓴다.",
-        subItems: ["docs/ 에 architecture, schema 등 몰아 넣는다."],
+        text: "CLAUDE.md (AGENTS.MD)는 Knowledge Dump가 아닌 Routing File 역할을 하도록 단순하게 유지한다.",
+        subItems: ["architecture, schema 등 구체적인 내용은 docs/ 에 몰아 넣고 링크만 남긴다."],
       },
       {
         text: "세션 관리",
