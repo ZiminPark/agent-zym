@@ -1,14 +1,5 @@
 # Harness Page Requirements
 
-## Original Requirement
-"이 페이지(jiyu-han-portfolio 5열 카드 레이아웃)를 레퍼런스 삼아서 harness.mdx의 내용을 페이지로 만들고 싶어."
-
-## Reference
-- URL: https://jiyu-han-portfolio.vercel.app/projects
-- 5열 풀하이트 세로 카드 스트립, 배경 이미지 오버레이, 다크 테마
-
-## Clarified Requirements
-
 ### Goal
 harness.mdx의 6개 섹션(0. Setup ~ 5. Compound)을 레퍼런스 스타일의 인터랙티브 카드 그리드 페이지로 구현
 

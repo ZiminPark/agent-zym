@@ -15,6 +15,10 @@ Please refer to the following documents in the `docs/` directory for detailed in
 - **[Deployment](docs/deployment.md)**: Information about Vercel deployment and debugging failures.
 - **[Comments](docs/comments.md)**: Steps to configure and integrate Giscus comments.
 
+## Requirements
+
+- requirements for building blogs are in the `requirements/` directory.
+
 ## Development Commands
 
 ```bash
