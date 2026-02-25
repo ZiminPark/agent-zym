@@ -35,7 +35,7 @@ import { sections, references } from '../data/harness';
       {sections.map((section, i) => (
         <a
           href={`/harness/${section.slug}`}
-          class={`harness-card group relative overflow-hidden rounded-2xl bg-gradient-to-br ${section.gradient} text-white min-h-[200px] sm:min-h-[240px] lg:min-h-[40vh] flex flex-col justify-between p-7 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:brightness-110`}
+          class={`harness-card group relative overflow-hidden rounded-2xl bg-gradient-to-br ${section.gradient} text-white min-h-[140px] sm:min-h-[160px] lg:min-h-[28vh] flex flex-col justify-between p-7 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:brightness-110`}
           style={`animation-delay: ${i * 80}ms`}
         >
           {/* Top: category number */}
@@ -47,7 +47,7 @@ import { sections, references } from '../data/harness';
 
           {/* Background icon — centered, large, ghostly */}
           <svg
-            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-36 h-36 opacity-10 group-hover:opacity-20 group-hover:scale-110 transition-all duration-700"
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 opacity-10 group-hover:opacity-20 group-hover:scale-110 transition-all duration-700"
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="1"
