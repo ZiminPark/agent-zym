@@ -4,8 +4,9 @@ import ThemeToggle from './ThemeToggle.astro';
 
 <header class="sticky top-0 z-40" style="background: var(--bg); border-bottom: 1px solid var(--border);">
   <nav class="mx-auto max-w-5xl px-4 sm:px-6 py-4 flex flex-wrap items-center justify-between gap-y-3">
-    <a href="/" class="display-heading text-2xl sm:text-3xl leading-none" style="color: var(--text); text-decoration: none;">
-      agent-zym
+    <a href="/" class="brand-link display-heading text-2xl sm:text-3xl leading-none" style="color: var(--text); text-decoration: none;" aria-label="agent-zym home">
+      <span class="brand-full">agent-zym</span>
+      <span class="brand-compact" aria-hidden="true">az</span>
     </a>
 
     <div class="flex w-full sm:w-auto items-center justify-between sm:justify-end gap-4 sm:gap-6">
@@ -19,6 +20,33 @@ import ThemeToggle from './ThemeToggle.astro';
 </header>
 
 <style>
+  .brand-link {
+    display: grid;
+    align-items: center;
+    min-width: 8.8ch;
+  }
+
+  .brand-full,
+  .brand-compact {
+    grid-area: 1 / 1;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .brand-compact {
+    opacity: 0;
+    transform: translateY(2px) scale(0.98);
+  }
+
+  :global(body.brand-compact) .brand-full {
+    opacity: 0;
+    transform: translateY(-2px) scale(0.98);
+  }
+
+  :global(body.brand-compact) .brand-compact {
+    opacity: 1;
+    transform: none;
+  }
+
   .nav-link {
     font-size: 0.9rem;
     font-weight: 500;
@@ -31,8 +59,21 @@ import ThemeToggle from './ThemeToggle.astro';
   }
 
   @media (max-width: 640px) {
+    .brand-link {
+      min-width: 7.8ch;
+    }
+
     .nav-link {
       font-size: 0.84rem;
     }
   }
 </style>
+
+<script>
+  const toggleCompactBrand = () => {
+    document.body.classList.toggle('brand-compact', window.scrollY > 24);
+  };
+
+  toggleCompactBrand();
+  window.addEventListener('scroll', toggleCompactBrand, { passive: true });
+</script>
