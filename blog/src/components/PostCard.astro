@@ -16,16 +16,16 @@ const formattedDate = new Date(pubDate).toLocaleDateString('en-US', {
 });
 ---
 
-<article class="post-card stagger-in" style={`animation-delay: ${index * 80}ms;`}>
+<article class="post-card stagger-in" style={`animation-delay: ${index * 85}ms;`}>
   <a href={`/${post.slug}`} class="block">
-    <div class="flex items-start justify-between gap-8">
+    <div class="flex items-start justify-between gap-6 sm:gap-8">
       <div class="flex-1 min-w-0">
-        <div class="flex flex-wrap items-center gap-3 sm:gap-4 mb-3">
+        <div class="flex flex-wrap items-center gap-2.5 sm:gap-3.5 mb-3">
           <span class="card-date">{formattedDate}</span>
           {tags && tags.length > 0 && (
-            <div class="flex flex-wrap gap-2">
+            <div class="flex flex-wrap gap-1.5 sm:gap-2">
               {tags.slice(0, 3).map((tag) => (
-                <span class="tag-pill" style="padding: 0.125rem 0.5rem; font-size: 0.625rem;">{tag}</span>
+                <span class="tag-pill" style="padding: 0.11rem 0.48rem; font-size: 0.6rem;">{tag}</span>
               ))}
             </div>
           )}
@@ -34,14 +34,22 @@ const formattedDate = new Date(pubDate).toLocaleDateString('en-US', {
         <p class="card-desc line-clamp-2">{description}</p>
       </div>
       {image && (
-        <div class="hidden md:block flex-shrink-0 w-32 h-24 rounded-lg overflow-hidden" style="border: 1px solid var(--border);">
+        <div class="hidden md:block card-thumb-wrap flex-shrink-0 w-32 h-24 rounded-xl overflow-hidden">
           <img
             src={image}
             alt={title}
-            class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+            class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
           />
         </div>
       )}
     </div>
   </a>
 </article>
+
+<style>
+  .card-thumb-wrap {
+    border: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
+    box-shadow: 0 8px 20px rgba(77, 58, 37, 0.1);
+    background: var(--bg-surface);
+  }
+</style>

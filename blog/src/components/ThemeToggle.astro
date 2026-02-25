@@ -3,22 +3,41 @@
 
 <button
   id="theme-toggle"
-  class="relative w-8 h-8 flex items-center justify-center rounded-full transition-colors"
-  style="color: var(--text-muted);"
+  class="theme-toggle"
   aria-label="Toggle theme"
 >
-  <svg class="sun-icon w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+  <svg class="sun-icon icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
     <circle cx="12" cy="12" r="4"></circle>
-    <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"></path>
+    <path d="M12 2.5v2.1m0 14.8v2.1M4.93 4.93l1.48 1.48m10.18 10.18 1.48 1.48M2.5 12h2.1m14.8 0h2.1M4.93 19.07l1.48-1.48m10.18-10.18 1.48-1.48"></path>
   </svg>
-  <svg class="moon-icon w-[18px] h-[18px] hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+  <svg class="moon-icon icon hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+    <path d="M21 12.7A9 9 0 1 1 11.3 3a7.2 7.2 0 0 0 9.7 9.7Z"></path>
   </svg>
 </button>
 
 <style>
-  button:hover {
-    color: var(--color-accent) !important;
+  .theme-toggle {
+    width: 2rem;
+    height: 2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.65rem;
+    border: 1px solid color-mix(in srgb, var(--border) 84%, transparent);
+    background: color-mix(in srgb, var(--bg-surface) 78%, transparent);
+    color: var(--text-muted);
+    transition: all 0.22s ease;
+  }
+
+  .theme-toggle:hover {
+    color: var(--color-accent);
+    border-color: color-mix(in srgb, var(--color-accent) 40%, var(--border));
+    transform: translateY(-1px);
+  }
+
+  .icon {
+    width: 1rem;
+    height: 1rem;
   }
 </style>
 
@@ -37,19 +56,14 @@
     }
   }
 
-  const currentTheme = localStorage.getItem('theme') || 'light';
+  const currentTheme = localStorage.getItem('theme') || (document.documentElement.classList.contains('dark') ? 'dark' : 'light');
   updateIcons(currentTheme);
 
   themeToggle?.addEventListener('click', () => {
     const isDark = document.documentElement.classList.contains('dark');
     const newTheme = isDark ? 'light' : 'dark';
 
-    if (isDark) {
-      document.documentElement.classList.remove('dark');
-    } else {
-      document.documentElement.classList.add('dark');
-    }
-
+    document.documentElement.classList.toggle('dark', !isDark);
     localStorage.setItem('theme', newTheme);
     updateIcons(newTheme);
   });
