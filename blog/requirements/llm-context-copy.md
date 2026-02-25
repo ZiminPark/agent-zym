@@ -68,6 +68,10 @@
 ## User intent hint
 Use this article as source context. Quote accurately when needed.
 
+## Hyperlinks (1-depth)
+- {link_label_1}: {absolute_url_1}
+- {link_label_2}: {absolute_url_2}
+
 ## Article content
 {markdown_body}
 ```
@@ -75,6 +79,8 @@ Use this article as source context. Quote accurately when needed.
 원칙:
 - HTML이 아닌 Markdown 기반
 - URL/메타데이터를 함께 포함해 LLM 응답의 출처 정합성 강화
+- 본문에 포함된 hyperlink를 별도 섹션으로 함께 제공해, 에이전트가 원문 링크를 추가 fetch할 수 있게 한다.
+- hyperlink depth는 최대 1로 제한한다. 즉 현재 문서에 직접 등장한 링크만 포함하고, 링크의 링크를 재탐색하지 않는다.
 
 ## 7. Success Criteria
 정량:
@@ -122,10 +128,11 @@ Use this article as source context. Quote accurately when needed.
 - 헤더 검증:
   - `curl -I http://127.0.0.1:4321/harness.md | rg -i 'content-type: text/markdown'`
 - 본문 스키마 검증:
-  - `curl -s http://127.0.0.1:4321/harness.md | rg '^# Context:|^- URL:|^- Tags:|^## User intent hint|^## Article content'`
+  - `curl -s http://127.0.0.1:4321/harness.md | rg '^# Context:|^- URL:|^- Tags:|^## User intent hint|^## Hyperlinks \\(1-depth\\)|^## Article content'`
 - 통과 기준:
   - `content-type`이 `text/markdown` 포함
   - 필수 섹션(`Context`, `URL`, `Tags`, `User intent hint`, `Article content`) 모두 포함
+  - 링크가 있는 문서는 `Hyperlinks (1-depth)` 섹션이 포함되고, 각 항목이 절대 URL 형식이어야 함
 
 ### 10.4 UI 복사 동작 검증
 - 목적: 사용자/에이전트 복사 UX가 정상 동작하는지 확인
@@ -134,6 +141,7 @@ Use this article as source context. Quote accurately when needed.
   - 실패 시 `Failed`(2초 후 원복)
   - `Open Markdown`가 동일 `.md` 엔드포인트를 열어야 함
   - 클립보드 텍스트가 `.md` fetch 결과와 동일 스키마를 만족해야 함
+  - 링크가 있는 문서를 복사하면 `Hyperlinks (1-depth)` 섹션에 링크 목록이 포함되어야 함
 - 방법:
   - 수동 브라우저 점검 또는 Playwright/CDP로 버튼 클릭 + 클립보드 읽기 자동화
 

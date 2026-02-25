@@ -24,11 +24,12 @@ const {
 } = Astro.props;
 
 const alignmentClass = align === 'end' ? 'context-actions-end' : '';
-const showMotivation = motivationText.trim().length > 0;
+const showMotivation = motivationText.trim().length > 0 && align !== 'end';
+const compactClass = showMotivation ? '' : 'context-actions-compact';
 ---
 
 <div
-  class={`context-actions ${alignmentClass} ${className}`}
+  class={`context-actions ${alignmentClass} ${compactClass} ${className}`}
   data-markdown-path={markdownPath}
   data-title={title}
   data-canonical-path={canonicalPath ?? ''}
@@ -134,6 +135,70 @@ const showMotivation = motivationText.trim().length > 0;
       }, 2000);
     };
 
+    const MAX_HYPERLINKS = 60;
+
+    const trimTrailingPunctuation = (value) => value.replace(/[),.;!?]+$/g, '');
+
+    const normalizeHttpUrl = (rawUrl, baseUrl) => {
+      try {
+        const resolved = new URL(trimTrailingPunctuation(rawUrl), baseUrl);
+        if (resolved.protocol !== 'http:' && resolved.protocol !== 'https:') {
+          return '';
+        }
+        return resolved.toString();
+      } catch {
+        return '';
+      }
+    };
+
+    const extractOneDepthHyperlinks = (sourceText, baseUrl) => {
+      const hyperlinks = [];
+      const seen = new Set();
+
+      const pushLink = (label, rawUrl) => {
+        if (hyperlinks.length >= MAX_HYPERLINKS) return;
+        const normalizedUrl = normalizeHttpUrl(rawUrl, baseUrl);
+        if (!normalizedUrl || seen.has(normalizedUrl)) return;
+        seen.add(normalizedUrl);
+        hyperlinks.push({
+          label: (label || 'Link').replace(/\s+/g, ' ').trim() || 'Link',
+          url: normalizedUrl,
+        });
+      };
+
+      const markdownLinkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+      for (const match of sourceText.matchAll(markdownLinkRegex)) {
+        const label = match[1] || '';
+        const destination = (match[2] || '').trim().replace(/^<|>$/g, '').match(/^\S+/)?.[0] || '';
+        if (!destination) continue;
+        pushLink(label, destination);
+      }
+
+      const markdownRefRegex = /^\[([^\]]+)\]:\s*(\S+)/gm;
+      for (const match of sourceText.matchAll(markdownRefRegex)) {
+        const label = match[1] || '';
+        const destination = match[2] || '';
+        if (!destination) continue;
+        pushLink(label, destination);
+      }
+
+      const autoLinkRegex = /<((?:https?:\/\/)[^>\s]+)>/g;
+      for (const match of sourceText.matchAll(autoLinkRegex)) {
+        const destination = match[1] || '';
+        if (!destination) continue;
+        pushLink(destination, destination);
+      }
+
+      const bareUrlRegex = /\bhttps?:\/\/[^\s<>()]+/g;
+      for (const match of sourceText.matchAll(bareUrlRegex)) {
+        const destination = match[0] || '';
+        if (!destination) continue;
+        pushLink(destination, destination);
+      }
+
+      return hyperlinks;
+    };
+
     const buildPayload = (markdownText) => {
       const trimmed = markdownText.trim();
       if (/^#\s*Context:/i.test(trimmed)) {
@@ -141,6 +206,7 @@ const showMotivation = motivationText.trim().length > 0;
       }
 
       const canonicalURL = new URL(canonicalPath, window.location.origin).toString();
+      const hyperlinks = extractOneDepthHyperlinks(trimmed, canonicalURL);
       const lines = [`# Context: ${title}`, `- URL: ${canonicalURL}`];
 
       if (pubDate) {
@@ -152,6 +218,13 @@ const showMotivation = motivationText.trim().length > 0;
       lines.push('## User intent hint');
       lines.push(hint);
       lines.push('');
+      if (hyperlinks.length > 0) {
+        lines.push('## Hyperlinks (1-depth)');
+        for (const link of hyperlinks) {
+          lines.push(`- ${link.label}: ${link.url}`);
+        }
+        lines.push('');
+      }
       lines.push('## Article content');
       lines.push(trimmed);
       lines.push('');
@@ -220,6 +293,10 @@ const showMotivation = motivationText.trim().length > 0;
     flex-direction: column;
     align-items: flex-start;
     gap: 0.55rem;
+  }
+
+  .context-actions-compact {
+    gap: 0;
   }
 
   .context-motivation {
