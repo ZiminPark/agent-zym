@@ -65,7 +65,7 @@ export const sections: HarnessSection[] = [
         },
       },
       {
-        text: "Plugin을 쓰되 SKILL.md 를 공부하고 사용한다. + 자신의 입맛에 수정해서 쓴다.",
+        text: "Plugin을 쓰되 공부하고 사용한다. 자신의 입맛에 맞게 수정해서 쓴다.",
       },
       {
         text: "음성 입력을 적극 활용하여 타이핑 병목을 줄인다.",
@@ -87,7 +87,7 @@ export const sections: HarnessSection[] = [
     items: [
       {
         text: "스펙 문서는 읽는다.",
-        subItems: ["급하거나 피곤하면 안 읽는다. 하지만 결국 읽는게 빠르다."],
+        subItems: ["급하거나 피곤하면 읽지 않고 넘긴다. 하지만 결국 읽는게 빠르다."],
       },
       {
         text: "UI Component가 추가되는 Spec은 Terminal 내에서라도 Mock UI를 그려달라고 한다.",
@@ -97,7 +97,7 @@ export const sections: HarnessSection[] = [
       },
       {
         text: "모호한(Vague) 내용을 구체화 하고, 미지의 영역(Unknown)을 수면 위로 올리고, 구현 수단(Medium)을 탐색한다.",
-        link: "https://github.com/team-attention/plugins-for-claude-natives/tree/main/plugins/clarify/skills",
+        subItems: ["https://github.com/team-attention/plugins-for-claude-natives/tree/main/plugins/clarify/skills"],
       },
     ],
   },
@@ -111,13 +111,13 @@ export const sections: HarnessSection[] = [
     gradient: "from-emerald-600 to-teal-500",
     items: [
       {
-        text: "구현 순서를 DAG로 나타내라고 한다. (이 정도 하면 알아서 병렬 실행해준다)",
+        text: "구현 순서를 DAG로 나타내라고 한다. 병렬 실행을 위해서.",
       },
       {
-        text: "Plan이 Spec과 일치하는지 검토한다. 달라지는 경우가 있음.",
+        text: "Plan이 Spec과 일치하는지 검토한다. 달라지는 경우가 많다.",
       },
       {
-        text: "architecture, framework 결정, schema 설계 수준의 high level 기술적 결정은 \"읽고 이해한다\"",
+        text: "Architecture, Framework 결정, DB Schema 설계 수준의 high level 기술적 결정은 \"읽고 이해한다\"",
       },
       {
         text: "Verification Plan도 같이 세우라고한다.",
@@ -138,22 +138,16 @@ export const sections: HarnessSection[] = [
     gradient: "from-orange-600 to-amber-500",
     items: [
       {
-        text: "frontier model이 아니어도 되는 작업이면 모델 바꿔서 실행한다. plan에 opus를 쓰고 execution은 sonnet 쓰는것도 방법.",
+        text: "Verification이 완료될때까지 계속 작업하라고 시킨다.",
       },
       {
-        text: "verification이 완료될때까지 계속 작업하라고 시키기",
+        text: "작업 종료 알림을 받는다.",
       },
       {
-        text: "작업 종료 알림 받기",
+        text: "Worktree를 생성해서 작업한다.",
       },
       {
-        text: "worktree를 알아서 생성해서 작업하게 한다",
-      },
-      {
-        text: "syntax error를 잡는 hook은 꼭 걸어둔다",
-        subItems: [
-          "line 수, style formatter 같은 인간을 위한 건 필요없다",
-        ],
+        text: "Syntax error를 잡는 Hook은 꼭 걸어둔다."
       },
     ],
   },
@@ -176,7 +170,7 @@ export const sections: HarnessSection[] = [
         text: "선입력 시킨다. (자동화?)",
       },
       {
-        text: "review agent를 만든다.",
+        text: "Review Agent를 만든다.",
       },
       {
         text: "버그는 test coverage로 남기고 compound한다.",
@@ -196,16 +190,10 @@ export const sections: HarnessSection[] = [
         text: "Spec 문서는 requirements/ 에 저장한다.",
       },
       {
-        text: "버그 수정 문서는 docs/bug-fix/ 하위 경로에 저장하고, \"이번에 에이전트가 멍청하게 행동한 부분이 어디인가?\" + \"이 문제는 나중에도 또 발생할 것 같은가?\"를 기준으로 오답 노트와 해결책(Solution)을 함께 정리하며 필요시 린터를 추가한다.",
+        text: "버그 수정 문서는 docs/bug-fix/ 하위 경로에 저장하고, \"이번에 에이전트가 멍청하게 행동한 부분이 어디인가?\" + \"이 문제는 나중에도 또 발생할 것 같은가?\"를 기준으로 오답 노트와 해결책(Solution)을 함께 정리한다.",
       },
       {
-        text: "자동화는 slash command부터 시작한다. Sub agent, Skill, Hook을 처음부터 만들지 않는다.",
-        subItems: [
-          "반복되는 워크플로우가 보이면 /command (Custom Slash Command)부터 만든다.",
-          "자주 쓰는 command가 Claude 판단으로 자동 실행되어야 하면 Skill로 승격한다.",
-          "도구 실행 전후에 매번 돌아야 하는 규칙이면 Hook으로 만든다.",
-          "컨텍스트 격리가 필요하면 그때 Sub agent를 쓴다.",
-        ],
+        text: "자동화는 slash command부터 시작한다. Sub agent, Skill, Hook을 처음부터 만들지 않는다."
       },
     ],
   },
