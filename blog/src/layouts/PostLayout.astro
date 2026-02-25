@@ -36,29 +36,27 @@ const formattedDate = new Date(pubDate).toLocaleDateString('en-US', {
       },
     })} />
 
-    <header class="post-header paper-surface mb-12 sm:mb-14 stagger-in px-5 sm:px-7 py-7 sm:py-8">
-      <p class="mono-label" style="color: var(--text-subtle);">Field Notes</p>
-      <h1 class="display-heading text-4xl sm:text-5xl md:text-6xl mt-3" style="color: var(--text);">
+    <header class="mb-10 sm:mb-12">
+      <h1 class="display-heading text-4xl sm:text-5xl md:text-6xl" style="color: var(--text);">
         {title}
       </h1>
-      <p class="mt-5 text-base sm:text-lg" style="color: var(--text-muted); line-height: 1.68; max-width: 52ch;">
+      <p class="mt-4 text-base sm:text-lg" style="color: var(--text-muted); line-height: 1.65; max-width: 52ch;">
         {description}
       </p>
-      <div class="mt-6 flex flex-wrap items-center gap-3 sm:gap-4">
+      <div class="mt-5 flex flex-wrap items-center gap-3 sm:gap-4">
         <span class="mono-label">{formattedDate}</span>
         {tags && tags.length > 0 && (
           <div class="flex flex-wrap gap-1.5 sm:gap-2">
             {tags.map((tag) => (
-              <a href={`/tags/${tag}`} class="tag-pill">
-                {tag}
-              </a>
+              <a href={`/tags/${tag}`} class="tag-pill">{tag}</a>
             ))}
           </div>
         )}
       </div>
+      <div class="ink-divider mt-6"></div>
     </header>
 
-    <div class="prose prose-lg max-w-none stagger-in" style="animation-delay: 90ms;">
+    <div class="prose prose-lg max-w-none">
       <slot />
     </div>
 
@@ -67,32 +65,3 @@ const formattedDate = new Date(pubDate).toLocaleDateString('en-US', {
     </div>
   </article>
 </BaseLayout>
-
-<style>
-  .post-header {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .post-header::after {
-    content: '';
-    position: absolute;
-    right: -1.35rem;
-    bottom: -1.8rem;
-    width: 7rem;
-    height: 7rem;
-    border-radius: 9999px;
-    border: 1px dashed color-mix(in srgb, var(--color-accent) 40%, var(--border));
-    opacity: 0.55;
-    pointer-events: none;
-  }
-
-  @media (max-width: 640px) {
-    .post-header::after {
-      width: 5.6rem;
-      height: 5.6rem;
-      right: -1.35rem;
-      bottom: -1.55rem;
-    }
-  }
-</style>

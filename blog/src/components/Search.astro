@@ -1,66 +1,29 @@
 ---
 ---
 
-<section class="search-shell paper-surface mb-12 p-4 sm:p-5">
-  <label for="search-input" class="mono-label block mb-3">Search Notes</label>
-  <div class="relative">
-    <svg class="search-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
-      <circle cx="11" cy="11" r="7"></circle>
-      <path d="m20 20-3.9-3.9"></path>
-    </svg>
-    <input
-      type="search"
-      id="search-input"
-      placeholder="Find by title, summary, or tag"
-      class="search-input w-full pl-10 pr-4 py-3.5 outline-none"
-      autocomplete="off"
-    />
-  </div>
+<section class="mb-10">
+  <label for="search-input" class="mono-label block mb-2">Search</label>
+  <input
+    type="search"
+    id="search-input"
+    placeholder="Search by title, description, or tag"
+    class="search-input w-full px-3 py-3 outline-none"
+    autocomplete="off"
+  />
   <div id="search-results" class="search-results mt-4 hidden"></div>
 </section>
 
 <style>
-  .search-shell {
-    position: relative;
-  }
-
-  .search-shell::before {
-    content: '';
-    position: absolute;
-    right: 1rem;
-    top: 0.9rem;
-    width: 2.15rem;
-    height: 2.15rem;
-    border: 1px dashed color-mix(in srgb, var(--color-accent) 42%, var(--border));
-    border-radius: 9999px;
-    opacity: 0.6;
-    pointer-events: none;
-  }
-
-  .search-icon {
-    position: absolute;
-    left: 0.8rem;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 1rem;
-    height: 1rem;
-    color: var(--text-subtle);
-  }
-
   .search-input {
-    border-radius: 0.78rem;
-    border: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
-    background: color-mix(in srgb, var(--bg-surface) 72%, transparent);
+    border: 1px solid var(--border);
+    border-radius: 0.55rem;
+    background: var(--bg);
     color: var(--text);
-    font-family: var(--font-body);
-    font-size: 0.95rem;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    font-size: 0.94rem;
   }
 
   .search-input:focus {
-    border-color: color-mix(in srgb, var(--color-accent) 48%, var(--border));
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 14%, transparent);
-    background: color-mix(in srgb, var(--bg-elevated) 88%, transparent);
+    border-color: var(--text-subtle);
   }
 
   .search-input::placeholder {
@@ -69,52 +32,37 @@
 
   .search-results {
     display: grid;
-    gap: 0.5rem;
+    gap: 0;
+    border-top: 1px solid var(--border);
   }
 
   .search-hit {
     display: block;
-    border: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
-    border-radius: 0.8rem;
-    background: color-mix(in srgb, var(--bg-elevated) 92%, transparent);
-    padding: 0.85rem 0.9rem;
     text-decoration: none;
-    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-  }
-
-  .search-hit:hover {
-    transform: translateY(-1px);
-    border-color: color-mix(in srgb, var(--color-accent) 46%, var(--border));
-    box-shadow: var(--shadow-soft);
+    border-bottom: 1px solid var(--border);
+    padding: 0.9rem 0;
   }
 
   .search-hit-title {
     margin: 0;
     font-family: var(--font-display);
-    font-style: italic;
-    font-size: 1.28rem;
-    line-height: 1.16;
+    font-size: 1.3rem;
+    line-height: 1.2;
     color: var(--text);
   }
 
   .search-hit-desc {
-    margin: 0.3rem 0 0;
+    margin: 0.28rem 0 0;
     color: var(--text-muted);
     font-size: 0.88rem;
-    line-height: 1.48;
+    line-height: 1.45;
   }
 
   .search-hit-tags {
-    margin-top: 0.56rem;
+    margin-top: 0.5rem;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.38rem;
-  }
-
-  @media (max-width: 640px) {
-    .search-hit-title {
-      font-size: 1.18rem;
-    }
+    gap: 0.35rem;
   }
 </style>
 
@@ -153,7 +101,7 @@
     ));
 
     if (results.length === 0) {
-      searchResults.innerHTML = `<p style="color: var(--text-muted); font-size: 0.875rem; padding: 0.4rem 0.1rem;">No matching posts.</p>`;
+      searchResults.innerHTML = `<p style="color: var(--text-muted); font-size: 0.875rem; padding: 0.75rem 0;">No matching posts.</p>`;
       searchResults.classList.remove('hidden');
       return;
     }
@@ -168,7 +116,7 @@
             item.tags.length > 0
               ? `<div class="search-hit-tags">
                 ${item.tags
-                  .map((tag) => `<span class="tag-pill" style="padding: 0.1rem 0.48rem; font-size: 0.61rem;">${tag}</span>`)
+                  .map((tag) => `<span class="tag-pill">${tag}</span>`)
                   .join('')}
               </div>`
               : ''

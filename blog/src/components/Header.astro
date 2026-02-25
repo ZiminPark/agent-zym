@@ -2,132 +2,37 @@
 import ThemeToggle from './ThemeToggle.astro';
 ---
 
-<header class="sticky top-0 z-50 pt-3 sm:pt-4">
-  <div class="mx-auto max-w-5xl px-4 sm:px-6">
-    <nav class="header-shell flex flex-wrap items-center justify-between gap-y-3 px-4 sm:px-5 py-3 sm:py-3.5">
-      <a href="/" class="brand-link group flex items-center gap-3">
-        <span class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 96 96" fill="none">
-            <path
-              d="M15 19C33 15 56 15 78 19C63 33 37 52 22 77C42 83 62 83 80 77"
-              stroke="currentColor"
-              stroke-width="8"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </span>
-        <div>
-          <span class="display-heading text-2xl sm:text-[1.95rem] leading-none" style="color: var(--text);">agent-zym</span>
-          <span class="brand-sub">warm notes for ai builders</span>
-        </div>
-      </a>
+<header class="sticky top-0 z-40" style="background: var(--bg); border-bottom: 1px solid var(--border);">
+  <nav class="mx-auto max-w-5xl px-4 sm:px-6 py-4 flex flex-wrap items-center justify-between gap-y-3">
+    <a href="/" class="display-heading text-2xl sm:text-3xl leading-none" style="color: var(--text); text-decoration: none;">
+      agent-zym
+    </a>
 
-      <div class="flex w-full sm:w-auto items-center justify-between sm:justify-end gap-4 sm:gap-6">
-        <a href="/" class="nav-link">Home</a>
-        <a href="/harness" class="nav-link">Harness</a>
-        <a href="/tags" class="nav-link">Tags</a>
-        <a href="/rss.xml" class="nav-link">RSS</a>
-        <ThemeToggle />
-      </div>
-    </nav>
-    <div class="mt-3 ink-divider"></div>
-  </div>
+    <div class="flex w-full sm:w-auto items-center justify-between sm:justify-end gap-4 sm:gap-6">
+      <a href="/" class="nav-link">Home</a>
+      <a href="/harness" class="nav-link">Harness</a>
+      <a href="/tags" class="nav-link">Tags</a>
+      <a href="/rss.xml" class="nav-link">RSS</a>
+      <ThemeToggle />
+    </div>
+  </nav>
 </header>
 
 <style>
-  .header-shell {
-    border: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
-    border-radius: 1.1rem;
-    background: color-mix(in srgb, var(--bg-elevated) 86%, transparent);
-    backdrop-filter: blur(12px);
-    box-shadow: var(--shadow-soft);
-  }
-
-  .brand-link {
-    text-decoration: none;
-    min-width: 0;
-  }
-
-  .brand-mark {
-    width: 2rem;
-    height: 2rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 0.7rem;
-    color: color-mix(in srgb, var(--color-accent) 88%, var(--text));
-    background: color-mix(in srgb, var(--bg-surface) 80%, transparent);
-    border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
-    transition: transform 0.25s ease;
-  }
-
-  .group:hover .brand-mark {
-    transform: rotate(-6deg) scale(1.03);
-  }
-
-  .brand-mark svg {
-    width: 1.45rem;
-    height: 1.45rem;
-  }
-
-  .brand-sub {
-    display: block;
-    margin-top: 0.18rem;
-    font-family: var(--font-mono);
-    font-size: 0.62rem;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    color: var(--text-subtle);
-  }
-
   .nav-link {
-    font-family: var(--font-body);
-    font-size: 0.92rem;
+    font-size: 0.9rem;
     font-weight: 500;
     color: var(--text-muted);
     text-decoration: none;
-    position: relative;
-    transition: color 0.2s ease;
-  }
-
-  .nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: -3px;
-    left: 0;
-    width: 0;
-    height: 1.5px;
-    border-radius: 9999px;
-    background-color: color-mix(in srgb, var(--color-accent) 82%, var(--text));
-    transition: width 0.26s ease;
   }
 
   .nav-link:hover {
     color: var(--text);
   }
 
-  .nav-link:hover::after {
-    width: 100%;
-  }
-
   @media (max-width: 640px) {
-    .header-shell {
-      padding-inline: 0.9rem;
-    }
-
-    .brand-mark {
-      width: 1.78rem;
-      height: 1.78rem;
-      border-radius: 0.62rem;
-    }
-
-    .brand-sub {
-      font-size: 0.57rem;
-    }
-
     .nav-link {
-      font-size: 0.85rem;
+      font-size: 0.84rem;
     }
   }
 </style>
