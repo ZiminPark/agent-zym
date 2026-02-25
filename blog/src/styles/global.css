@@ -364,6 +364,22 @@ a {
   text-decoration-thickness: 2px;
 }
 
+/* ─── TOC ─── */
+.toc-link {
+  color: var(--text-muted);
+}
+
+.toc-link:hover {
+  color: var(--text);
+}
+
+.toc-link-active {
+  color: var(--text);
+  font-weight: 500;
+  background: color-mix(in srgb, var(--bg) 60%, transparent);
+  box-shadow: inset 2px 0 0 var(--color-accent);
+}
+
 /* ─── Harness card entrance animation ─── */
 .harness-card.harness-animate {
   opacity: 0;
