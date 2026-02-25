@@ -18,6 +18,7 @@ Please refer to the following documents in the `docs/` directory for detailed in
 ## Requirements
 
 - requirements for building blogs are in the `requirements/` directory.
+- all blog pages and UI updates must be mobile-friendly and responsive by default (mobile-first, then tablet/desktop).
 
 ## Development Commands
 
