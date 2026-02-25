@@ -26,12 +26,22 @@ function highlight(text: string): string {
   llmContextHref={`/harness/${section.slug}.md`}
 >
   <article class="max-w-4xl mx-auto px-6 py-12">
-    {/* Breadcrumb */}
-    <nav class="flex items-center gap-2 text-sm mb-8" style="color: var(--text-muted);">
-      <a href="/harness" class="link-underline transition-colors" style="color: var(--text-muted);">Harness</a>
-      <span>/</span>
-      <span style="color: var(--text);">{section.title}</span>
-    </nav>
+    <div class="flex items-start justify-between gap-4 mb-8 flex-wrap">
+      {/* Breadcrumb */}
+      <nav class="flex items-center gap-2 text-sm" style="color: var(--text-muted);">
+        <a href="/harness" class="link-underline transition-colors" style="color: var(--text-muted);">Harness</a>
+        <span>/</span>
+        <span style="color: var(--text);">{section.title}</span>
+      </nav>
+      <ContextActions
+        markdownPath={`/harness/${section.slug}.md`}
+        canonicalPath={`/harness/${section.slug}`}
+        title={`${section.title} — Harness`}
+        tags={['harness', 'coding-agent', section.slug]}
+        hint="Use this focused section as execution context and keep recommendations concrete."
+        align="end"
+      />
+    </div>
 
     {/* Header */}
     <header class="mb-12">
@@ -42,14 +52,6 @@ function highlight(text: string): string {
         {section.title}
       </h1>
       <p class="mt-4 text-lg" style="color: var(--text-muted);">{section.summary}</p>
-      <ContextActions
-        markdownPath={`/harness/${section.slug}.md`}
-        canonicalPath={`/harness/${section.slug}`}
-        title={`${section.title} — Harness`}
-        tags={['harness', 'coding-agent', section.slug]}
-        hint="Use this focused section as execution context and keep recommendations concrete."
-        className="mt-6"
-      />
     </header>
 
     {/* Content */}
