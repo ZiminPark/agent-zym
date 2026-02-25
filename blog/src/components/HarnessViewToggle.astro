@@ -1,0 +1,58 @@
+---
+interface HarnessView {
+  id: 'grid' | 'feed';
+  label: string;
+  href: string;
+  title: string;
+  iconPath: string;
+}
+
+interface Props {
+  active: HarnessView['id'];
+  class?: string;
+}
+
+const { active, class: className = '' } = Astro.props as Props;
+
+const views: HarnessView[] = [
+  {
+    id: 'grid',
+    label: 'Grid',
+    href: '/harness',
+    title: 'View as Grid',
+    iconPath:
+      'M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25a2.25 2.25 0 0 1-2.25-2.25v-2.25Z',
+  },
+  {
+    id: 'feed',
+    label: 'Feed',
+    href: '/harness/all',
+    title: 'View as Feed',
+    iconPath:
+      'M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 0 1 0 3.75H5.625a1.875 1.875 0 0 1 0-3.75Z',
+  },
+];
+---
+
+<div
+  class={`inline-flex items-center gap-1 rounded-full p-1 ${className}`}
+  style="border: 1px solid var(--border); background: color-mix(in srgb, var(--bg) 88%, transparent);"
+>
+  {views.map((view) => {
+    const isActive = view.id === active;
+    return (
+      <a
+        href={view.href}
+        title={view.title}
+        aria-current={isActive ? 'page' : undefined}
+        class={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm transition-colors ${isActive ? 'pointer-events-none' : ''}`}
+        style={isActive ? 'background: var(--bg-surface); color: var(--text);' : 'color: var(--text-muted);'}
+      >
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d={view.iconPath} />
+        </svg>
+        <span>{view.label}</span>
+      </a>
+    );
+  })}
+</div>
