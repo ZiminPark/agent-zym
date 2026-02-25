@@ -6,11 +6,13 @@ interface Props {
   type?: 'website' | 'article';
   pubDate?: Date;
   tags?: string[];
+  llmContextHref?: string;
 }
 
-const { title, description, image = '/og-image.png', type = 'website', pubDate, tags } = Astro.props;
+const { title, description, image = '/og-image.png', type = 'website', pubDate, tags, llmContextHref } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const socialImageURL = new URL(image, Astro.site);
+const llmContextURL = llmContextHref ? new URL(llmContextHref, Astro.site ?? Astro.url).toString() : undefined;
 ---
 
 <!-- Global Metadata -->
@@ -25,6 +27,13 @@ const socialImageURL = new URL(image, Astro.site);
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
+{llmContextHref && (
+  <>
+    <link rel="alternate" type="text/markdown" href={llmContextHref} />
+    <meta name="llm-context-url" content={llmContextURL} />
+    <meta name="llm-context-format" content="text/markdown" />
+  </>
+)}
 
 <!-- Primary Meta Tags -->
 <title>{title}</title>

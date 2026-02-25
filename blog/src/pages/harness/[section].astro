@@ -1,6 +1,7 @@
 ---
 import HarnessLayout from '../../layouts/HarnessLayout.astro';
 import HarnessImage from '../../components/HarnessImage.astro';
+import ContextActions from '../../components/ContextActions.astro';
 import { sections } from '../../data/harness';
 import type { GetStaticPaths } from 'astro';
 
@@ -19,7 +20,11 @@ function highlight(text: string): string {
 }
 ---
 
-<HarnessLayout title={`${section.title} — Harness`} description={section.summary}>
+<HarnessLayout
+  title={`${section.title} — Harness`}
+  description={section.summary}
+  llmContextHref={`/harness/${section.slug}.md`}
+>
   <article class="max-w-4xl mx-auto px-6 py-12">
     {/* Breadcrumb */}
     <nav class="flex items-center gap-2 text-sm mb-8" style="color: var(--text-muted);">
@@ -37,6 +42,14 @@ function highlight(text: string): string {
         {section.title}
       </h1>
       <p class="mt-4 text-lg" style="color: var(--text-muted);">{section.summary}</p>
+      <ContextActions
+        markdownPath={`/harness/${section.slug}.md`}
+        canonicalPath={`/harness/${section.slug}`}
+        title={`${section.title} — Harness`}
+        tags={['harness', 'coding-agent', section.slug]}
+        hint="Use this focused section as execution context and keep recommendations concrete."
+        className="mt-6"
+      />
     </header>
 
     {/* Content */}

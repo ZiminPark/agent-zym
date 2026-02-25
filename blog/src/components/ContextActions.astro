@@ -1,0 +1,144 @@
+---
+interface Props {
+  markdownPath: string;
+  title: string;
+  canonicalPath?: string;
+  pubDate?: string;
+  tags?: string[];
+  hint?: string;
+  className?: string;
+}
+
+const {
+  markdownPath,
+  title,
+  canonicalPath,
+  pubDate,
+  tags = [],
+  hint = 'Use this page as source context. Quote accurately when needed.',
+  className = '',
+} = Astro.props;
+---
+
+<div
+  class={`context-actions flex flex-wrap items-center gap-2 ${className}`}
+  data-markdown-path={markdownPath}
+  data-title={title}
+  data-canonical-path={canonicalPath ?? ''}
+  data-pub-date={pubDate ?? ''}
+  data-tags={tags.join(', ')}
+  data-hint={hint}
+>
+  <button type="button" class="context-btn context-btn-primary" data-role="copy">
+    Copy for LLM
+  </button>
+  <a href={markdownPath} class="context-btn context-btn-secondary" target="_blank" rel="noopener noreferrer">
+    Open Markdown
+  </a>
+</div>
+
+<script is:inline>
+  (() => {
+    const root = document.currentScript?.previousElementSibling;
+    if (!(root instanceof HTMLElement) || !root.classList.contains('context-actions')) return;
+
+    const copyButton = root.querySelector('button[data-role="copy"]');
+    if (!(copyButton instanceof HTMLButtonElement)) return;
+
+    const markdownPath = root.dataset.markdownPath || '';
+    const title = root.dataset.title || document.title;
+    const canonicalPath = root.dataset.canonicalPath || window.location.pathname;
+    const pubDate = root.dataset.pubDate || '';
+    const tags = root.dataset.tags || '';
+    const hint = root.dataset.hint || 'Use this page as source context. Quote accurately when needed.';
+
+    let isBusy = false;
+    let resetTimer = null;
+
+    const resetLabelLater = () => {
+      if (resetTimer) window.clearTimeout(resetTimer);
+      resetTimer = window.setTimeout(() => {
+        copyButton.textContent = 'Copy for LLM';
+      }, 2000);
+    };
+
+    const buildPayload = (markdownText) => {
+      const trimmed = markdownText.trim();
+      if (/^#\s*Context:/i.test(trimmed)) {
+        return trimmed;
+      }
+
+      const canonicalURL = new URL(canonicalPath, window.location.origin).toString();
+      const lines = [`# Context: ${title}`, `- URL: ${canonicalURL}`];
+
+      if (pubDate) {
+        lines.push(`- Published: ${pubDate}`);
+      }
+
+      lines.push(`- Tags: ${tags || 'none'}`);
+      lines.push('');
+      lines.push('## User intent hint');
+      lines.push(hint);
+      lines.push('');
+      lines.push('## Article content');
+      lines.push(trimmed);
+      lines.push('');
+      return lines.join('\n');
+    };
+
+    copyButton.addEventListener('click', async () => {
+      if (isBusy || !markdownPath) return;
+      isBusy = true;
+      copyButton.textContent = 'Copying...';
+
+      try {
+        const response = await fetch(markdownPath);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch markdown: ${response.status}`);
+        }
+
+        const markdownText = await response.text();
+        const payload = buildPayload(markdownText);
+        await navigator.clipboard.writeText(payload);
+        copyButton.textContent = 'Copied!';
+        resetLabelLater();
+      } catch (_error) {
+        copyButton.textContent = 'Failed';
+        resetLabelLater();
+      } finally {
+        isBusy = false;
+      }
+    });
+  })();
+</script>
+
+<style>
+  .context-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    padding: 0.45rem 0.9rem;
+    font-size: 0.78rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+
+  .context-btn-primary {
+    color: var(--text);
+    background: var(--bg-surface);
+  }
+
+  .context-btn-primary:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .context-btn-secondary:hover {
+    border-color: var(--text-subtle);
+    color: var(--text);
+  }
+</style>

@@ -7,7 +7,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://agent-zym.vercel.app',
+  site: 'https://zimmy.dev',
   output: 'static',
   integrations: [mdx(), sitemap()],
 

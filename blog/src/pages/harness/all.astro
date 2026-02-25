@@ -1,6 +1,7 @@
 ---
 import HarnessLayout from '../../layouts/HarnessLayout.astro';
 import HarnessImage from '../../components/HarnessImage.astro';
+import ContextActions from '../../components/ContextActions.astro';
 import { sections, references } from '../../data/harness';
 
 function highlight(text: string): string {
@@ -8,7 +9,11 @@ function highlight(text: string): string {
 }
 ---
 
-<HarnessLayout title="Harness — Full Guide" description="The complete coding agent workflow guide in one page">
+<HarnessLayout
+  title="Harness — Full Guide"
+  description="The complete coding agent workflow guide in one page"
+  llmContextHref="/harness/all.md"
+>
   <article class="max-w-3xl mx-auto px-6 sm:px-8 py-12">
     {/* Page title */}
     <header class="mb-16">
@@ -20,6 +25,14 @@ function highlight(text: string): string {
           <p class="mt-3 text-base" style="color: var(--text-muted);">
             The complete guide — all six sections.
           </p>
+          <ContextActions
+            markdownPath="/harness/all.md"
+            canonicalPath="/harness/all"
+            title="Harness — Full Guide"
+            tags={['harness', 'coding-agent', 'workflow', 'full-guide']}
+            hint="Use this full workflow guide as source context and preserve section structure."
+            className="mt-5"
+          />
         </div>
         <a
           href="/harness"

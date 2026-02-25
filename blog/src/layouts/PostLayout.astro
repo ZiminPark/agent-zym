@@ -9,6 +9,7 @@ interface Props {
 
 const { post } = Astro.props;
 const { title, description, pubDate, tags, image } = post.data;
+const llmContextHref = `/${post.slug}.md`;
 
 const formattedDate = new Date(pubDate).toLocaleDateString('en-US', {
   year: 'numeric',
@@ -17,7 +18,7 @@ const formattedDate = new Date(pubDate).toLocaleDateString('en-US', {
 });
 ---
 
-<BaseLayout title={title} description={description} image={image} type="article" pubDate={pubDate} tags={tags}>
+<BaseLayout title={title} description={description} image={image} type="article" pubDate={pubDate} tags={tags} llmContextHref={llmContextHref}>
   <article class="max-w-3xl mx-auto">
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",

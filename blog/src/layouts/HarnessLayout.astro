@@ -8,15 +8,16 @@ interface Props {
   title: string;
   description: string;
   image?: string;
+  llmContextHref?: string;
 }
 
-const { title, description, image } = Astro.props;
+const { title, description, image, llmContextHref } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={title} description={description} image={image} />
+    <BaseHead title={title} description={description} image={image} llmContextHref={llmContextHref} />
   </head>
   <body class="min-h-screen flex flex-col">
     <Header />

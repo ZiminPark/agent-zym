@@ -14,7 +14,7 @@ export async function GET(context: APIContext) {
   return rss({
     title: 'agent-zym',
     description: 'Claude Code Plugin Marketplace - Skills, Plugins, and Automation Tools',
-    site: context.site || 'https://agent-zym.vercel.app',
+    site: context.site || 'https://zimmy.dev',
     items: sortedPosts.map((post) => ({
       title: post.data.title,
       pubDate: post.data.pubDate,

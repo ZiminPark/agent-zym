@@ -1,9 +1,14 @@
 ---
 import HarnessLayout from '../layouts/HarnessLayout.astro';
+import ContextActions from '../components/ContextActions.astro';
 import { sections, references } from '../data/harness';
 ---
 
-<HarnessLayout title="Harness — Coding Agent Workflow" description="A systematic guide to harnessing your coding agent for maximum productivity">
+<HarnessLayout
+  title="Harness — Coding Agent Workflow"
+  description="A systematic guide to harnessing your coding agent for maximum productivity"
+  llmContextHref="/harness.md"
+>
   <!-- Hero -->
   <section class="max-w-6xl mx-auto px-8 pt-20 pb-10">
     <div class="flex items-start justify-between gap-4">
@@ -14,6 +19,14 @@ import { sections, references } from '../data/harness';
         <p class="mt-4 text-lg max-w-2xl" style="color: var(--text-muted);">
           A systematic workflow for getting the most out of Coding Agent — from setup to compounding knowledge.
         </p>
+        <ContextActions
+          markdownPath="/harness.md"
+          canonicalPath="/harness"
+          title="Harness — Coding Agent Workflow"
+          tags={['harness', 'coding-agent', 'workflow']}
+          hint="Use this workflow guide as source context. Keep steps concrete and actionable."
+          className="mt-6"
+        />
       </div>
       <a
         href="/harness/all"

@@ -96,57 +96,110 @@ Use this article as source context. Quote accurately when needed.
 - 클립보드 API 브라우저 제약
   - 완화: 실패 상태 피드백 명확화, Open Markdown 대체 경로 제공
 
-## 10. Simple Implementation Idea (MVP)
-### 10.1 파일 변경안
-- 신규: `blog/src/pages/context/[...slug].md.ts`
-  - 역할: slug 기준으로 포스트 본문 Markdown 반환 (`content-type: text/markdown`)
-- 신규: `blog/src/components/PostContextActions.astro`
+## 10. Verification (기능 검증 방식)
+### 10.1 테스트 환경
+- 로컬 실행: `cd blog && npm run dev -- --host 127.0.0.1 --port 4321`
+- 대표 검증 대상 페이지:
+  - 포스트 상세: `/{post-slug}`
+  - Harness 메인: `/harness`
+  - Harness 섹션: `/harness/{section}`
+  - Harness 통합: `/harness/all`
+
+### 10.2 메타데이터/발견성 검증 (LLM-friendly 탐지)
+- 목적: 코딩 에이전트가 HTML만 가져와도 LLM 컨텍스트 URL을 찾을 수 있는지 확인
+- 확인 항목:
+  - `<link rel="alternate" type="text/markdown" href="...">`
+  - `<meta name="llm-context-url" content="...">`
+  - `<meta name="llm-context-format" content="text/markdown">`
+- 예시:
+  - `curl -s http://127.0.0.1:4321/harness | rg 'rel="alternate"|llm-context-url|llm-context-format'`
+- 통과 기준:
+  - 대상 페이지마다 3개 메타/링크가 모두 존재
+  - `alternate href`가 실제 fetch 가능한 `.md` 경로를 가리킴
+
+### 10.3 Markdown 엔드포인트 검증 (Web Fetch 결과)
+- 목적: `.md` fetch 결과가 LLM 입력용 스키마를 유지하는지 확인
+- 헤더 검증:
+  - `curl -I http://127.0.0.1:4321/harness.md | rg -i 'content-type: text/markdown'`
+- 본문 스키마 검증:
+  - `curl -s http://127.0.0.1:4321/harness.md | rg '^# Context:|^- URL:|^- Tags:|^## User intent hint|^## Article content'`
+- 통과 기준:
+  - `content-type`이 `text/markdown` 포함
+  - 필수 섹션(`Context`, `URL`, `Tags`, `User intent hint`, `Article content`) 모두 포함
+
+### 10.4 UI 복사 동작 검증
+- 목적: 사용자/에이전트 복사 UX가 정상 동작하는지 확인
+- 검증 항목:
+  - `Copy for LLM` 클릭 시 `Copying...` -> `Copied!`(2초 후 원복)
+  - 실패 시 `Failed`(2초 후 원복)
+  - `Open Markdown`가 동일 `.md` 엔드포인트를 열어야 함
+  - 클립보드 텍스트가 `.md` fetch 결과와 동일 스키마를 만족해야 함
+- 방법:
+  - 수동 브라우저 점검 또는 Playwright/CDP로 버튼 클릭 + 클립보드 읽기 자동화
+
+### 10.5 재사용/회귀 검증
+- 목적: "공용 컴포넌트" 원칙이 깨지지 않도록 보장
+- 체크리스트:
+  - `ContextActions`를 사용하는 모든 페이지에서 버튼 라벨/상태 전환 규칙이 동일
+  - 새 페이지 추가 시 `llmContextHref`(head 메타) + `ContextActions`(UI) + `.md` route 3요소가 함께 적용
+  - 대표 URL 세트(포스트 1개, harness 3개)에 대해 10.2~10.4를 릴리즈 전 반복 수행
+
+## 11. Simple Implementation Idea (MVP)
+### 11.1 파일 변경안
+- 신규: `blog/src/lib/llm-context.ts`
+  - 역할: LLM 컨텍스트 공통 템플릿 빌더
+- 신규: `blog/src/components/ContextActions.astro`
   - 역할: `Copy for LLM`, `Open Markdown` UI + 클립보드 동작
   - 원칙: 특정 페이지에 종속되지 않는 공용 컴포넌트
-- 수정: `blog/src/layouts/PostLayout.astro`
-  - 역할: 헤더 영역에 `PostContextActions` 삽입 (모든 post 상세 경로 자동 적용)
+- 신규: `blog/src/pages/[...slug].md.ts`, `blog/src/pages/harness.md.ts`, `blog/src/pages/harness/[section].md.ts`, `blog/src/pages/harness/all.md.ts`
+  - 역할: 페이지별 LLM-friendly Markdown 응답 제공 (`content-type: text/markdown`)
+- 수정: `blog/src/components/BaseHead.astro`
+  - 역할: `alternate` + `llm-context-*` 메타 노출
+- 수정: `blog/src/layouts/PostLayout.astro`, `blog/src/pages/harness*.astro`
+  - 역할: 상세 페이지/가이드 페이지에 공용 `ContextActions` 삽입
 
-### 10.1.1 컴포넌트 계약(초안)
-`PostContextActions`는 다음 props를 받는 공용 인터페이스를 가진다.
+### 11.1.1 컴포넌트 계약(초안)
+`ContextActions`는 다음 props를 받는 공용 인터페이스를 가진다.
 
 ```ts
-type PostContextActionsProps = {
-  slug: string;
+type ContextActionsProps = {
+  markdownPath: string;
   title: string;
-  canonicalUrl: string;
+  canonicalPath?: string;
   pubDate?: string;
   tags?: string[];
+  hint?: string;
   className?: string;
 };
 ```
 
 규칙:
-- 컴포넌트 내부에서 post 컬렉션 데이터를 직접 조회하지 않는다.
+- 컴포넌트 내부에서 콘텐츠 컬렉션 데이터를 직접 조회하지 않는다.
 - 필요한 메타데이터는 모두 props로 전달받아, 다른 페이지에서도 동일하게 재사용 가능해야 한다.
 
-### 10.2 동작 흐름
-1. 상세 페이지에서 `Copy for LLM` 클릭
-2. 클라이언트가 `/context/{slug}.md` fetch
-3. 응답 텍스트를 템플릿으로 감싼 뒤 `navigator.clipboard.writeText()`
+### 11.2 동작 흐름
+1. 상세/가이드 페이지에서 `Copy for LLM` 클릭
+2. 클라이언트가 해당 페이지의 `.md` 엔드포인트 fetch
+3. 응답 텍스트를 공통 템플릿으로 보정 후 `navigator.clipboard.writeText()`
 4. 성공/실패 상태를 버튼 라벨에 반영
 
-### 10.3 최소 의사코드
+### 11.3 최소 의사코드
 ```ts
-const res = await fetch(`/context/${slug}.md`)
-const body = await res.text()
-const payload = `# Context: ${title}\n- URL: ${url}\n...\n\n## Article content\n${body}`
-await navigator.clipboard.writeText(payload)
+const res = await fetch(markdownPath);
+const body = await res.text();
+const payload = `# Context: ${title}\n- URL: ${url}\n...\n\n## Article content\n${body}`;
+await navigator.clipboard.writeText(payload);
 ```
 
-## 11. Rollout Plan
+## 12. Rollout Plan
 - Phase 1: 공용 컴포넌트 구축 + PostLayout 전면 적용
 - Phase 2: 섹션 단위 복사
 - Phase 3: Claude deep link + 간단 실사용 이벤트 추적
 
-## 12. Documentation Impact
+## 13. Documentation Impact
 이 요구사항 기준으로 문서 업데이트 필요 항목:
 
 - `blog/docs/architecture.md`
-  - Components/Layout 섹션에 `PostContextActions` 공용 컴포넌트와 `context/[...slug].md` 라우트 추가
+  - Components/Layout 섹션에 `ContextActions` 공용 컴포넌트와 `.md` 라우트 체계 추가
 - `blog/docs/writing_posts.md`
   - 작성자 가이드에 "포스트 상세에서 LLM 컨텍스트 복사 기능이 자동 제공됨" 명시
