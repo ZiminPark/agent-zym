@@ -46,15 +46,15 @@ const compactClass = showMotivation ? '' : 'context-actions-compact';
       aria-haspopup="menu"
       aria-expanded="false"
     >
-      <span data-role="trigger-label">Use with LLM</span>
+      <span data-role="trigger-label">Copy Page</span>
       <svg class="context-chevron" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
       </svg>
     </button>
     <div class="context-menu" data-role="menu" role="menu" hidden>
       <button type="button" class="context-menu-item" data-role="copy-option" role="menuitem">
-        <span class="context-menu-title">Copy for LLM</span>
-        <span class="context-menu-desc">Fastest path: copy ready-to-use context for chat.</span>
+        <span class="context-menu-title">Copy Page</span>
+        <span class="context-menu-desc">Copy this page as LLM-ready context for chat.</span>
       </button>
       <a
         href={markdownPath}
@@ -92,7 +92,7 @@ const compactClass = showMotivation ? '' : 'context-actions-compact';
     const pubDate = root.dataset.pubDate || '';
     const tags = root.dataset.tags || '';
     const hint = root.dataset.hint || 'Use this page as source context. Quote accurately when needed.';
-    const defaultLabel = 'Use with LLM';
+    const defaultLabel = 'Copy Page';
 
     let isBusy = false;
     let isMenuOpen = false;
