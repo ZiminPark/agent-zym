@@ -1,15 +1,15 @@
 import type { APIRoute } from 'astro';
 import { buildLlmContextDocument } from '../lib/llm-context';
-import { buildHarnessOverviewMarkdown } from '../lib/harness-markdown';
+import { buildHarnessFullGuideMarkdown } from '../lib/harness-markdown';
 
 export const GET: APIRoute = async ({ site, url }) => {
   const canonicalURL = new URL('/harness', site ?? url).toString();
   const content = buildLlmContextDocument({
-    title: 'Harness — Coding Agent Workflow',
+    title: 'Harness — Full Guide',
     url: canonicalURL,
-    tags: ['harness', 'coding-agent', 'workflow'],
-    hint: 'Use this workflow guide as source context. Keep steps concrete and actionable.',
-    content: buildHarnessOverviewMarkdown(),
+    tags: ['harness', 'coding-agent', 'workflow', 'full-guide'],
+    hint: 'Use this full workflow guide as source context and preserve section structure.',
+    content: buildHarnessFullGuideMarkdown(),
   });
 
   return new Response(content, {
@@ -19,4 +19,3 @@ export const GET: APIRoute = async ({ site, url }) => {
     },
   });
 };
-

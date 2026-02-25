@@ -1,128 +1,169 @@
 ---
 import HarnessLayout from '../layouts/HarnessLayout.astro';
+import HarnessImage from '../components/HarnessImage.astro';
 import ContextActions from '../components/ContextActions.astro';
 import HarnessViewToggle from '../components/HarnessViewToggle.astro';
+import TableOfContents from '../components/TableOfContents.astro';
 import { sections, references } from '../data/harness';
+
+function highlight(text: string): string {
+  return text.replace(/읽는다|읽고 이해한다/g, (m) => `<mark class="harness-highlight">${m}</mark>`);
+}
+
+const tocItems = [
+  ...sections.map((section) => ({
+    id: section.slug,
+    label: `${String(section.number).padStart(2, '0')}. ${section.title}`,
+  })),
+  { id: 'references', label: 'References' },
+];
 ---
 
 <HarnessLayout
-  title="Harness — Coding Agent Workflow"
-  description="A systematic guide to harnessing your coding agent for maximum productivity"
+  title="Harness — Full Guide"
+  description="The complete coding agent workflow guide in one page"
   llmContextHref="/harness.md"
 >
-  <!-- Hero -->
-  <section class="max-w-6xl mx-auto px-8 pt-20 pb-10">
-    <div class="flex items-start justify-between gap-4">
-      <div>
-        <h1 class="display-heading text-5xl md:text-6xl" style="color: var(--text);">
-          Harness
-        </h1>
-        <p class="mt-4 text-lg max-w-2xl" style="color: var(--text-muted);">
-          A systematic workflow for getting the most out of Coding Agent — from setup to compounding knowledge.
-        </p>
-      </div>
-      <div class="flex-shrink-0 flex items-center justify-end gap-2 flex-wrap">
-        <HarnessViewToggle active="grid" />
-        <ContextActions
-          markdownPath="/harness.md"
-          canonicalPath="/harness"
-          title="Harness — Coding Agent Workflow"
-          tags={['harness', 'coding-agent', 'workflow']}
-          hint="Use this workflow guide as source context. Keep steps concrete and actionable."
-          align="end"
-        />
-      </div>
-    </div>
-  </section>
+  <div class="max-w-7xl mx-auto px-6 sm:px-8 py-12">
+    <div class="lg:grid lg:grid-cols-12 lg:gap-10">
+      <TableOfContents
+        items={tocItems}
+        title="Contents"
+        class="lg:col-span-4 xl:col-span-3"
+      />
 
-  <!-- Card Grid -->
-  <section class="max-w-6xl mx-auto px-8 pb-20">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {sections.map((section, i) => (
-        <a
-          href={`/harness/${section.slug}`}
-          class={`harness-card group relative overflow-hidden rounded-2xl bg-gradient-to-br ${section.gradient} text-white min-h-[140px] sm:min-h-[160px] lg:min-h-[28vh] flex flex-col justify-between p-7 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:brightness-110`}
-          style={`animation-delay: ${i * 80}ms`}
-        >
-          {/* Top: category number */}
-          <div class="relative z-10">
-            <span class="font-mono text-xs tracking-widest uppercase opacity-60">
-              {String(section.number).padStart(2, '0')}
-            </span>
-          </div>
-
-          {/* Background icon — centered, large, ghostly */}
-          <svg
-            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 opacity-10 group-hover:opacity-20 group-hover:scale-110 transition-all duration-700"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1"
-            stroke="currentColor"
-          >
-            <path stroke-linecap="round" stroke-linejoin="round" d={section.iconPath} />
-          </svg>
-
-          {/* Bottom: title + summary */}
-          <div class="relative z-10">
-            <h2 class="text-2xl sm:text-3xl font-bold leading-tight">{section.title}</h2>
-            <p class="text-xs sm:text-sm opacity-60 mt-1.5 line-clamp-2">{section.summary}</p>
-          </div>
-
-          {/* Hover arrow */}
-          <svg
-            class="absolute bottom-7 right-7 w-5 h-5 opacity-0 group-hover:opacity-70 translate-x-2 group-hover:translate-x-0 transition-all duration-300"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="2"
-            stroke="currentColor"
-          >
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-          </svg>
-        </a>
-      ))}
-    </div>
-  </section>
-
-  <!-- References -->
-  <section id="references" class="max-w-6xl mx-auto px-8 pb-20">
-    <hr style="border-color: var(--border);" class="mb-12" />
-    <h2 class="display-heading text-2xl" style="color: var(--text);">References</h2>
-    <p class="mt-2 text-sm" style="color: var(--text-muted);">Articles and talks that shaped this workflow.</p>
-    <ol class="mt-8 space-y-4">
-      {references.map((ref, i) => (
-        <li>
-          <a href={ref.url} target="_blank" rel="noopener noreferrer" class="group flex items-start gap-4">
-            <span
-              class="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold"
-              style="background: var(--bg-surface); color: var(--text-muted);"
-            >
-              {i + 1}
-            </span>
-            <div class="pt-0.5">
-              <span class="transition-colors" style="color: var(--text);">{ref.title}</span>
-              <span class="block text-xs mt-0.5" style="color: var(--text-subtle);">{ref.domain}</span>
+      <article class="max-w-3xl mx-auto lg:mx-0 lg:col-span-8 xl:col-span-9">
+        {/* Page title */}
+        <header class="mb-16">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <h1 class="display-heading text-4xl md:text-5xl" style="color: var(--text);">
+                Harness
+              </h1>
+              <p class="mt-3 text-base" style="color: var(--text-muted);">
+                The complete guide — all six sections.
+              </p>
             </div>
+            <div class="flex-shrink-0 flex items-center justify-end gap-2 flex-wrap">
+              <HarnessViewToggle active="feed" />
+              <ContextActions
+                markdownPath="/harness.md"
+                canonicalPath="/harness"
+                title="Harness — Full Guide"
+                tags={['harness', 'coding-agent', 'workflow', 'full-guide']}
+                hint="Use this full workflow guide as source context and preserve section structure."
+                align="end"
+              />
+            </div>
+          </div>
+        </header>
+
+        {/* Sections */}
+        {sections.map((section, sectionIndex) => (
+          <section id={section.slug} class="scroll-mt-24">
+            {/* Gradient banner */}
+            <div class={`rounded-xl bg-gradient-to-r ${section.gradient} p-5 sm:p-6 text-white flex items-center justify-between`}>
+              <div>
+                <span class="font-mono text-xs tracking-widest opacity-60">
+                  {String(section.number).padStart(2, '0')}
+                </span>
+                <h2 class="text-2xl sm:text-3xl font-bold mt-0.5">{section.title}</h2>
+                <p class="text-sm opacity-70 mt-1">{section.summary}</p>
+              </div>
+              <svg
+                class="w-16 h-16 opacity-20 flex-shrink-0 ml-4 hidden sm:block"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1"
+                stroke="currentColor"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" d={section.iconPath} />
+              </svg>
+            </div>
+
+            {/* Items */}
+            <ol class="mt-8 space-y-5">
+              {section.items.map((item, i) => (
+                <li class="flex gap-4">
+                  <span
+                    class="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold"
+                    style="background: var(--bg-surface); color: var(--text-muted);"
+                  >
+                    {i + 1}
+                  </span>
+                  <div class="pt-0.5">
+                    <div class="flex flex-col sm:flex-row sm:items-baseline gap-2">
+                      <p class="leading-relaxed" style="color: var(--text);" set:html={highlight(item.text)} />
+                      {item.link && (
+                        <a
+                          href={item.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="inline-flex items-center gap-1 text-[11px] font-medium uppercase tracking-wider opacity-60 hover:opacity-100 transition-opacity whitespace-nowrap"
+                          style="color: var(--text-muted);"
+                        >
+                          <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
+                          </svg>
+                          Reference
+                        </a>
+                      )}
+                    </div>
+                    {item.subItems && (
+                      <ul class="mt-2.5 space-y-1.5 pl-4" style="border-left: 2px solid var(--border);">
+                        {item.subItems.map((sub) => (
+                          <li class="text-sm leading-relaxed" style="color: var(--text-muted);" set:html={highlight(sub)} />
+                        ))}
+                      </ul>
+                    )}
+                    {item.image && <HarnessImage image={item.image} />}
+                  </div>
+                </li>
+              ))}
+            </ol>
+
+            {/* Divider (except after last section) */}
+            {sectionIndex < sections.length - 1 && (
+              <hr class="my-14" style="border-color: var(--border);" />
+            )}
+          </section>
+        ))}
+
+        {/* References */}
+        <section id="references" class="scroll-mt-24">
+          <hr class="my-14" style="border-color: var(--border);" />
+          <h2 class="display-heading text-2xl" style="color: var(--text);">References</h2>
+          <p class="mt-2 text-sm" style="color: var(--text-muted);">Articles and talks that shaped this workflow.</p>
+          <ol class="mt-8 space-y-4">
+            {references.map((ref, i) => (
+              <li>
+                <a href={ref.url} target="_blank" rel="noopener noreferrer" class="group flex items-start gap-4">
+                  <span
+                    class="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold"
+                    style="background: var(--bg-surface); color: var(--text-muted);"
+                  >
+                    {i + 1}
+                  </span>
+                  <div class="pt-0.5">
+                    <span class="transition-colors" style="color: var(--text);">{ref.title}</span>
+                    <span class="block text-xs mt-0.5" style="color: var(--text-subtle);">{ref.domain}</span>
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        {/* Bottom nav */}
+        <div class="mt-16 pt-8" style="border-top: 1px solid var(--border);">
+          <a href="/harness/grid" class="inline-flex items-center gap-1.5 text-sm transition-colors link-underline" style="color: var(--text-muted);">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+            </svg>
+            Switch to Grid View
           </a>
-        </li>
-      ))}
-    </ol>
-  </section>
-
-  <script>
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('harness-card-visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    document.querySelectorAll('.harness-card').forEach((card) => {
-      observer.observe(card);
-    });
-  </script>
+        </div>
+      </article>
+    </div>
+  </div>
 </HarnessLayout>

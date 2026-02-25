@@ -39,18 +39,27 @@ const compactClass = showMotivation ? '' : 'context-actions-compact';
 >
   {showMotivation && <p class="context-motivation">{motivationText}</p>}
   <div class="context-menu-wrap">
-    <button
-      type="button"
-      class="context-btn context-btn-primary"
-      data-role="trigger"
-      aria-haspopup="menu"
-      aria-expanded="false"
-    >
-      <span data-role="trigger-label">Copy Page</span>
-      <svg class="context-chevron" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-      </svg>
-    </button>
+    <div class="context-btn-group">
+      <button
+        type="button"
+        class="context-btn context-btn-primary context-btn-main"
+        data-role="primary-action"
+      >
+        <span data-role="primary-label">Copy Page</span>
+      </button>
+      <button
+        type="button"
+        class="context-btn context-btn-primary context-btn-toggle"
+        data-role="menu-trigger"
+        aria-haspopup="menu"
+        aria-expanded="false"
+        aria-label="Show copy options"
+      >
+        <svg class="context-chevron" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+        </svg>
+      </button>
+    </div>
     <div class="context-menu" data-role="menu" role="menu" hidden>
       <button type="button" class="context-menu-item" data-role="copy-option" role="menuitem">
         <span class="context-menu-title">Copy Page</span>
@@ -76,13 +85,15 @@ const compactClass = showMotivation ? '' : 'context-actions-compact';
     const root = document.currentScript?.previousElementSibling;
     if (!(root instanceof HTMLElement) || !root.classList.contains('context-actions')) return;
 
-    const trigger = root.querySelector('button[data-role="trigger"]');
-    const triggerLabel = root.querySelector('[data-role="trigger-label"]');
+    const primaryAction = root.querySelector('button[data-role="primary-action"]');
+    const primaryLabel = root.querySelector('[data-role="primary-label"]');
+    const menuTrigger = root.querySelector('button[data-role="menu-trigger"]');
     const menu = root.querySelector('[data-role="menu"]');
     const copyOption = root.querySelector('button[data-role="copy-option"]');
     const openOption = root.querySelector('a[data-role="open-option"]');
 
-    if (!(trigger instanceof HTMLButtonElement)) return;
+    if (!(primaryAction instanceof HTMLButtonElement)) return;
+    if (!(menuTrigger instanceof HTMLButtonElement)) return;
     if (!(menu instanceof HTMLElement)) return;
     if (!(copyOption instanceof HTMLButtonElement)) return;
 
@@ -98,25 +109,25 @@ const compactClass = showMotivation ? '' : 'context-actions-compact';
     let isMenuOpen = false;
     let resetTimer = null;
 
-    const setTriggerLabel = (text) => {
-      if (triggerLabel instanceof HTMLElement) {
-        triggerLabel.textContent = text;
+    const setPrimaryLabel = (text) => {
+      if (primaryLabel instanceof HTMLElement) {
+        primaryLabel.textContent = text;
         return;
       }
-      trigger.textContent = text;
+      primaryAction.textContent = text;
     };
 
     const closeMenu = () => {
       isMenuOpen = false;
       menu.hidden = true;
-      trigger.setAttribute('aria-expanded', 'false');
+      menuTrigger.setAttribute('aria-expanded', 'false');
       root.classList.remove('is-open');
     };
 
     const openMenu = () => {
       isMenuOpen = true;
       menu.hidden = false;
-      trigger.setAttribute('aria-expanded', 'true');
+      menuTrigger.setAttribute('aria-expanded', 'true');
       root.classList.add('is-open');
     };
 
@@ -131,7 +142,7 @@ const compactClass = showMotivation ? '' : 'context-actions-compact';
     const resetLabelLater = () => {
       if (resetTimer) window.clearTimeout(resetTimer);
       resetTimer = window.setTimeout(() => {
-        setTriggerLabel(defaultLabel);
+        setPrimaryLabel(defaultLabel);
       }, 2000);
     };
 
@@ -231,10 +242,42 @@ const compactClass = showMotivation ? '' : 'context-actions-compact';
       return lines.join('\n');
     };
 
-    trigger.addEventListener('click', (event) => {
+    const runCopyAction = async () => {
+      if (isBusy || !markdownPath) return;
+
+      isBusy = true;
+      setPrimaryLabel('Copying...');
+
+      try {
+        const response = await fetch(markdownPath);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch markdown: ${response.status}`);
+        }
+
+        const markdownText = await response.text();
+        const payload = buildPayload(markdownText);
+        await navigator.clipboard.writeText(payload);
+        setPrimaryLabel('Copied!');
+        resetLabelLater();
+      } catch (_error) {
+        setPrimaryLabel('Failed');
+        resetLabelLater();
+      } finally {
+        isBusy = false;
+      }
+    };
+
+    menuTrigger.addEventListener('click', (event) => {
       event.preventDefault();
       event.stopPropagation();
       toggleMenu();
+    });
+
+    primaryAction.addEventListener('click', async (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      closeMenu();
+      await runCopyAction();
     });
 
     document.addEventListener('click', (event) => {
@@ -253,34 +296,13 @@ const compactClass = showMotivation ? '' : 'context-actions-compact';
 
     copyOption.addEventListener('click', async () => {
       closeMenu();
-      if (isBusy || !markdownPath) return;
-
-      isBusy = true;
-      setTriggerLabel('Copying...');
-
-      try {
-        const response = await fetch(markdownPath);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch markdown: ${response.status}`);
-        }
-
-        const markdownText = await response.text();
-        const payload = buildPayload(markdownText);
-        await navigator.clipboard.writeText(payload);
-        setTriggerLabel('Copied!');
-        resetLabelLater();
-      } catch (_error) {
-        setTriggerLabel('Failed');
-        resetLabelLater();
-      } finally {
-        isBusy = false;
-      }
+      await runCopyAction();
     });
 
     if (openOption instanceof HTMLAnchorElement) {
       openOption.addEventListener('click', () => {
         closeMenu();
-        setTriggerLabel('Opened Markdown');
+        setPrimaryLabel('Opened Markdown');
         resetLabelLater();
       });
     }
@@ -328,6 +350,29 @@ const compactClass = showMotivation ? '' : 'context-actions-compact';
     border: 1px solid var(--border);
     color: var(--text-muted);
     text-decoration: none;
+  }
+
+  .context-btn-group {
+    display: inline-flex;
+    align-items: stretch;
+  }
+
+  .context-btn-main {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: 0;
+  }
+
+  .context-btn-toggle {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    padding-inline: 0.56rem;
+    min-width: 2rem;
+  }
+
+  .context-btn-group:hover .context-btn-primary {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
   }
 
   .context-btn-primary {
