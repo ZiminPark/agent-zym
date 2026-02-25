@@ -19,11 +19,11 @@ const posts = allPosts.sort((a, b) => {
 >
   <div class="space-y-16">
     <!-- Hero -->
-    <section class="pt-16 pb-8 stagger-in">
-      <h1 class="display-heading text-6xl md:text-7xl lg:text-8xl leading-none" style="color: var(--text);">
+    <section class="pt-10 sm:pt-16 pb-8 stagger-in">
+      <h1 class="display-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-none" style="color: var(--text);">
         agent<span style="color: var(--color-accent);">-</span>zym
       </h1>
-      <p class="mt-6 max-w-lg" style="color: var(--text-muted); font-size: 1.0625rem; line-height: 1.7;">
+      <p class="mt-5 sm:mt-6 max-w-lg" style="color: var(--text-muted); font-size: 1.0625rem; line-height: 1.7;">
         Plugins, skills, and harness.
       </p>
     </section>
@@ -32,7 +32,7 @@ const posts = allPosts.sort((a, b) => {
 
     <!-- Posts -->
     <section>
-      <div class="flex items-center justify-between mb-8">
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-8">
         <h2 class="display-heading text-3xl" style="color: var(--text);">Latest Posts</h2>
         <span class="mono-label">{posts.length} {posts.length === 1 ? 'post' : 'posts'}</span>
       </div>

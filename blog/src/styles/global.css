@@ -397,6 +397,46 @@ a {
   }
 }
 
+@media (max-width: 640px) {
+  .post-card {
+    padding: 1.25rem 0;
+  }
+
+  .post-card:hover {
+    padding-left: 0;
+  }
+
+  .post-card .card-title {
+    font-size: 1.375rem;
+    line-height: 1.25;
+  }
+
+  .prose {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .prose h1 {
+    font-size: 2rem;
+    margin-top: 2.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .prose h2 {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .prose h3 {
+    font-size: 1.25rem;
+    margin-top: 1.5rem;
+  }
+
+  .prose pre {
+    padding: 1rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .harness-card.harness-animate { opacity: 1; transform: none; }
   .harness-card.harness-card-visible { animation: none; }

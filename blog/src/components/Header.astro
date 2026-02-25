@@ -3,20 +3,20 @@ import ThemeToggle from './ThemeToggle.astro';
 ---
 
 <header class="sticky top-0 z-50 backdrop-blur-md" style="background-color: color-mix(in srgb, var(--bg) 85%, transparent);">
-  <nav class="mx-auto max-w-5xl px-6 py-5 flex items-center justify-between">
+  <nav class="mx-auto max-w-5xl px-4 sm:px-6 py-4 sm:py-5 flex flex-wrap items-center justify-between gap-y-3">
     <a href="/" class="group flex items-center gap-2.5">
-      <span class="display-heading text-2xl tracking-tight" style="color: var(--text);">agent-zym</span>
+      <span class="display-heading text-xl sm:text-2xl tracking-tight" style="color: var(--text);">agent-zym</span>
       <span class="inline-block w-2 h-2 rounded-full bg-accent opacity-80 group-hover:scale-125 transition-transform"></span>
     </a>
 
-    <div class="flex items-center gap-8">
+    <div class="flex w-full sm:w-auto items-center justify-between sm:justify-end gap-5 sm:gap-8">
       <a href="/" class="nav-link">Home</a>
       <a href="/harness" class="nav-link">Harness</a>
       <a href="/rss.xml" class="nav-link">RSS</a>
       <ThemeToggle />
     </div>
   </nav>
-  <div class="mx-auto max-w-5xl px-6">
+  <div class="mx-auto max-w-5xl px-4 sm:px-6">
     <div style="height: 1px; background: var(--border);"></div>
   </div>
 </header>
@@ -46,5 +46,11 @@ import ThemeToggle from './ThemeToggle.astro';
   }
   .nav-link:hover::after {
     width: 100%;
+  }
+
+  @media (max-width: 640px) {
+    .nav-link {
+      font-size: 0.875rem;
+    }
   }
 </style>

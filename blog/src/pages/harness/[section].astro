@@ -25,8 +25,8 @@ function highlight(text: string): string {
   description={section.summary}
   llmContextHref={`/harness/${section.slug}.md`}
 >
-  <article class="max-w-4xl mx-auto px-6 py-12">
-    <div class="flex items-start justify-between gap-4 mb-8 flex-wrap">
+  <article class="max-w-4xl mx-auto px-4 sm:px-6 py-10 sm:py-12">
+    <div class="flex flex-col gap-4 mb-8 sm:flex-row sm:items-start sm:justify-between">
       {/* Breadcrumb */}
       <nav class="flex items-center gap-2 text-sm" style="color: var(--text-muted);">
         <a href="/harness" class="link-underline transition-colors" style="color: var(--text-muted);">Harness</a>
@@ -72,7 +72,7 @@ function highlight(text: string): string {
                   href={item.link} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  class="inline-flex items-center gap-1 text-[11px] font-medium uppercase tracking-wider opacity-60 hover:opacity-100 transition-opacity whitespace-nowrap"
+                  class="inline-flex items-center gap-1 text-[11px] font-medium uppercase tracking-wider opacity-60 hover:opacity-100 transition-opacity sm:whitespace-nowrap"
                   style="color: var(--text-muted);"
                 >
                   <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
@@ -96,7 +96,7 @@ function highlight(text: string): string {
     </ol>
 
     {/* Prev/Next Navigation */}
-    <nav class="mt-16 pt-8 flex justify-between" style="border-top: 1px solid var(--border);">
+    <nav class="mt-16 pt-8 flex flex-col gap-4 sm:flex-row sm:justify-between" style="border-top: 1px solid var(--border);">
       {prev ? (
         <a href={`/harness/${prev.slug}`} class="group flex items-center gap-2 transition-colors" style="color: var(--text-muted);">
           <svg class="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">

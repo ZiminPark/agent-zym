@@ -11,17 +11,17 @@ import { sections, references } from '../../data/harness';
   llmContextHref="/harness/grid.md"
 >
   <!-- Hero -->
-  <section class="max-w-6xl mx-auto px-8 pt-20 pb-10">
-    <div class="flex items-start justify-between gap-4">
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 sm:pt-20 pb-8 sm:pb-10">
+    <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
       <div>
-        <h1 class="display-heading text-5xl md:text-6xl" style="color: var(--text);">
+        <h1 class="display-heading text-4xl sm:text-5xl md:text-6xl" style="color: var(--text);">
           Harness
         </h1>
-        <p class="mt-4 text-lg max-w-2xl" style="color: var(--text-muted);">
+        <p class="mt-3 sm:mt-4 text-base sm:text-lg max-w-2xl" style="color: var(--text-muted);">
           A systematic workflow for getting the most out of Coding Agent — from setup to compounding knowledge.
         </p>
       </div>
-      <div class="flex-shrink-0 flex items-center justify-end gap-2 flex-wrap">
+      <div class="flex w-full flex-wrap items-center gap-2 sm:w-auto sm:justify-end lg:flex-shrink-0">
         <HarnessViewToggle active="grid" />
         <ContextActions
           markdownPath="/harness/grid.md"
@@ -36,7 +36,7 @@ import { sections, references } from '../../data/harness';
   </section>
 
   <!-- Card Grid -->
-  <section class="max-w-6xl mx-auto px-8 pb-20">
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {sections.map((section, i) => (
         <a
@@ -84,7 +84,7 @@ import { sections, references } from '../../data/harness';
   </section>
 
   <!-- References -->
-  <section id="references" class="max-w-6xl mx-auto px-8 pb-20">
+  <section id="references" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
     <hr style="border-color: var(--border);" class="mb-12" />
     <h2 class="display-heading text-2xl" style="color: var(--text);">References</h2>
     <p class="mt-2 text-sm" style="color: var(--text-muted);">Articles and talks that shaped this workflow.</p>
