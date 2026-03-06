@@ -1,6 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import Giscus from '../components/Giscus.astro';
+import ContextActions from '../components/ContextActions.astro';
 import { type CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -11,6 +12,30 @@ const { post } = Astro.props;
 const { title, description, pubDate, tags, image } = post.data;
 const llmContextHref = `/${post.slug}.md`;
 
+function extractExcerpt(body: string, maxLength = 160): string {
+  const plain = body
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/\*([^*]+)\*/g, '$1')
+    .replace(/^>\s?/gm, '')
+    .replace(/^-\s+/gm, '')
+    .replace(/^#+\s+/gm, '')
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/---/g, '')
+    .replace(/\n+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (plain.length <= maxLength) return plain;
+  const cut = plain.slice(0, maxLength);
+  const lastEnd = Math.max(cut.lastIndexOf('다.'), cut.lastIndexOf('. '));
+  if (lastEnd > maxLength * 0.5) return plain.slice(0, lastEnd + 2).trim();
+  const lastSpace = cut.lastIndexOf(' ');
+  if (lastSpace > maxLength * 0.7) return cut.slice(0, lastSpace) + '\u2026';
+  return cut + '\u2026';
+}
+
+const ogDescription = extractExcerpt(post.body ?? '');
+
 const formattedDate = new Date(pubDate).toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'long',
@@ -18,7 +43,7 @@ const formattedDate = new Date(pubDate).toLocaleDateString('en-US', {
 });
 ---
 
-<BaseLayout title={title} description={description} image={image} type="article" pubDate={pubDate} tags={tags} llmContextHref={llmContextHref}>
+<BaseLayout title={title} description={description} ogDescription={ogDescription} image={image} type="article" pubDate={pubDate} tags={tags} llmContextHref={llmContextHref}>
   <article class="max-w-[40rem] lg:max-w-[48rem] mx-auto">
     <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
@@ -43,15 +68,26 @@ const formattedDate = new Date(pubDate).toLocaleDateString('en-US', {
       <p class="mt-4 text-base sm:text-lg" style="color: var(--text-muted); line-height: 1.65; max-width: 65ch;">
         {description}
       </p>
-      <div class="mt-5 flex flex-wrap items-center gap-3 sm:gap-4">
-        <span class="mono-label">{formattedDate}</span>
-        {tags && tags.length > 0 && (
-          <div class="flex flex-wrap gap-1.5 sm:gap-2">
-            {tags.map((tag) => (
-              <a href={`/tags/${tag}`} class="tag-pill">{tag}</a>
-            ))}
-          </div>
-        )}
+      <div class="mt-5 flex flex-wrap items-center justify-between gap-3 sm:gap-4">
+        <div class="flex flex-wrap items-center gap-3 sm:gap-4">
+          <span class="mono-label">{formattedDate}</span>
+          {tags && tags.length > 0 && (
+            <div class="flex flex-wrap gap-1.5 sm:gap-2">
+              {tags.map((tag) => (
+                <a href={`/tags/${tag}`} class="tag-pill">{tag}</a>
+              ))}
+            </div>
+          )}
+        </div>
+        <ContextActions
+          markdownPath={llmContextHref}
+          title={title}
+          canonicalPath={Astro.url.pathname}
+          pubDate={formattedDate}
+          tags={tags}
+          align="end"
+          motivationText=""
+        />
       </div>
       <div class="ink-divider mt-6"></div>
     </header>

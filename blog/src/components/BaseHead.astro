@@ -2,6 +2,7 @@
 interface Props {
   title: string;
   description: string;
+  ogDescription?: string;
   image?: string;
   type?: 'website' | 'article';
   pubDate?: Date;
@@ -9,7 +10,8 @@ interface Props {
   llmContextHref?: string;
 }
 
-const { title, description, image = '/og.png', type = 'website', pubDate, tags, llmContextHref } = Astro.props;
+const { title, description, ogDescription, image = '/og.png', type = 'website', pubDate, tags, llmContextHref } = Astro.props;
+const socialDescription = ogDescription || description;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const socialImageURL = new URL(image, Astro.site);
 const llmContextURL = llmContextHref ? new URL(llmContextHref, Astro.site ?? Astro.url).toString() : undefined;
@@ -46,7 +48,7 @@ const llmContextURL = llmContextHref ? new URL(llmContextHref, Astro.site ?? Ast
 <meta property="og:type" content={type} />
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
-<meta property="og:description" content={description} />
+<meta property="og:description" content={socialDescription} />
 <meta property="og:image" content={socialImageURL} />
 <meta property="og:locale" content="ko_KR" />
 <meta property="og:site_name" content="agent-zym" />
@@ -61,7 +63,7 @@ const llmContextURL = llmContextHref ? new URL(llmContextHref, Astro.site ?? Ast
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={Astro.url} />
 <meta property="twitter:title" content={title} />
-<meta property="twitter:description" content={description} />
+<meta property="twitter:description" content={socialDescription} />
 <meta property="twitter:image" content={socialImageURL} />
 
 <!-- RSS Feed -->
