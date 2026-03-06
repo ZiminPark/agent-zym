@@ -26,6 +26,11 @@
       "name": "wedding-research",
       "description": "네이버 카페에서 키워드를 검색하고 후기를 분석하여 리포트를 생성합니다.",
       "source": "./plugins/wedding-research"
+    },
+    {
+      "name": "post-refiner",
+      "description": "Raw notes를 LinkedIn 포스트 + 블로그 글로 다듬는 협업형 글쓰기 스킬.",
+      "source": "./plugins/post-refiner"
     }
   ]
 }

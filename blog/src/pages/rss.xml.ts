@@ -13,7 +13,7 @@ export async function GET(context: APIContext) {
 
   return rss({
     title: 'agent-zym',
-    description: 'Claude Code Plugin Marketplace - Skills, Plugins, and Automation Tools',
+    description: 'Stories, reflections, and notes on co-living with AI agents — how we work, think, and create together.',
     site: context.site || 'https://zimmy.dev',
     items: sortedPosts.map((post) => ({
       title: post.data.title,

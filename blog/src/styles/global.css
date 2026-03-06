@@ -183,10 +183,14 @@ a {
 }
 
 .prose {
-  max-width: 66ch;
+  max-width: 40rem;
+  margin-left: auto;
+  margin-right: auto;
   color: var(--text);
   font-size: 1.05rem;
-  line-height: 1.8;
+  line-height: 1.85;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 .prose h1,
@@ -223,7 +227,7 @@ a {
 }
 
 .prose p {
-  margin-bottom: 1.35rem;
+  margin-bottom: 1.5rem;
 }
 
 .prose a {

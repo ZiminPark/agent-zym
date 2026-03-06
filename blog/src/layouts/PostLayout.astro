@@ -19,7 +19,7 @@ const formattedDate = new Date(pubDate).toLocaleDateString('en-US', {
 ---
 
 <BaseLayout title={title} description={description} image={image} type="article" pubDate={pubDate} tags={tags} llmContextHref={llmContextHref}>
-  <article class="max-w-3xl mx-auto">
+  <article class="max-w-[40rem] mx-auto">
     <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'BlogPosting',
@@ -40,7 +40,7 @@ const formattedDate = new Date(pubDate).toLocaleDateString('en-US', {
       <h1 class="display-heading text-4xl sm:text-5xl md:text-6xl" style="color: var(--text);">
         {title}
       </h1>
-      <p class="mt-4 text-base sm:text-lg" style="color: var(--text-muted); line-height: 1.65; max-width: 52ch;">
+      <p class="mt-4 text-base sm:text-lg" style="color: var(--text-muted); line-height: 1.65; max-width: 65ch;">
         {description}
       </p>
       <div class="mt-5 flex flex-wrap items-center gap-3 sm:gap-4">
@@ -56,7 +56,7 @@ const formattedDate = new Date(pubDate).toLocaleDateString('en-US', {
       <div class="ink-divider mt-6"></div>
     </header>
 
-    <div class="prose prose-lg max-w-none">
+    <div class="prose">
       <slot />
     </div>
 
