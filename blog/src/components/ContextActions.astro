@@ -108,6 +108,9 @@ const compactClass = showMotivation ? '' : 'context-actions-compact';
     let isBusy = false;
     let isMenuOpen = false;
     let resetTimer = null;
+    let cachedPayload = null;
+    const abortController = new AbortController();
+    const signal = abortController.signal;
 
     const setPrimaryLabel = (text) => {
       if (primaryLabel instanceof HTMLElement) {
@@ -122,6 +125,7 @@ const compactClass = showMotivation ? '' : 'context-actions-compact';
       menu.hidden = true;
       menuTrigger.setAttribute('aria-expanded', 'false');
       root.classList.remove('is-open');
+      menu.style.transform = '';
     };
 
     const openMenu = () => {
@@ -129,6 +133,15 @@ const compactClass = showMotivation ? '' : 'context-actions-compact';
       menu.hidden = false;
       menuTrigger.setAttribute('aria-expanded', 'true');
       root.classList.add('is-open');
+
+      requestAnimationFrame(() => {
+        const rect = menu.getBoundingClientRect();
+        if (rect.left < 8) {
+          menu.style.transform = `translateX(${8 - rect.left}px)`;
+        } else if (rect.right > window.innerWidth - 8) {
+          menu.style.transform = `translateX(${window.innerWidth - 8 - rect.right}px)`;
+        }
+      });
     };
 
     const toggleMenu = () => {
@@ -242,6 +255,22 @@ const compactClass = showMotivation ? '' : 'context-actions-compact';
       return lines.join('\n');
     };
 
+    const ensurePayload = async () => {
+      if (cachedPayload) return cachedPayload;
+      const response = await fetch(markdownPath);
+      if (!response.ok) throw new Error(`Failed to fetch markdown: ${response.status}`);
+      cachedPayload = buildPayload(await response.text());
+      return cachedPayload;
+    };
+
+    const prefetchPayload = () => {
+      if (cachedPayload || !markdownPath) return;
+      ensurePayload().catch(() => {});
+    };
+
+    root.addEventListener('pointerenter', prefetchPayload, { once: true, signal });
+    root.addEventListener('focusin', prefetchPayload, { once: true, signal });
+
     const runCopyAction = async () => {
       if (isBusy || !markdownPath) return;
 
@@ -249,14 +278,20 @@ const compactClass = showMotivation ? '' : 'context-actions-compact';
       setPrimaryLabel('Copying...');
 
       try {
-        const response = await fetch(markdownPath);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch markdown: ${response.status}`);
+        if (cachedPayload) {
+          await navigator.clipboard.writeText(cachedPayload);
+        } else {
+          try {
+            const textBlob = ensurePayload().then((text) =>
+              new Blob([text], { type: 'text/plain' })
+            );
+            await navigator.clipboard.write([
+              new ClipboardItem({ 'text/plain': textBlob }),
+            ]);
+          } catch {
+            await navigator.clipboard.writeText(await ensurePayload());
+          }
         }
-
-        const markdownText = await response.text();
-        const payload = buildPayload(markdownText);
-        await navigator.clipboard.writeText(payload);
         setPrimaryLabel('Copied!');
         resetLabelLater();
       } catch (_error) {
@@ -271,14 +306,14 @@ const compactClass = showMotivation ? '' : 'context-actions-compact';
       event.preventDefault();
       event.stopPropagation();
       toggleMenu();
-    });
+    }, { signal });
 
     primaryAction.addEventListener('click', async (event) => {
       event.preventDefault();
       event.stopPropagation();
       closeMenu();
       await runCopyAction();
-    });
+    }, { signal });
 
     document.addEventListener('click', (event) => {
       if (!isMenuOpen) return;
@@ -286,25 +321,25 @@ const compactClass = showMotivation ? '' : 'context-actions-compact';
       if (!root.contains(event.target)) {
         closeMenu();
       }
-    });
+    }, { signal });
 
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') {
+      if (event.key === 'Escape' && isMenuOpen) {
         closeMenu();
       }
-    });
+    }, { signal });
 
     copyOption.addEventListener('click', async () => {
       closeMenu();
       await runCopyAction();
-    });
+    }, { signal });
 
     if (openOption instanceof HTMLAnchorElement) {
       openOption.addEventListener('click', () => {
         closeMenu();
         setPrimaryLabel('Opened Markdown');
         resetLabelLater();
-      });
+      }, { signal });
     }
   })();
 </script>
@@ -346,7 +381,7 @@ const compactClass = showMotivation ? '' : 'context-actions-compact';
     padding: 0.45rem 0.9rem;
     font-size: 0.78rem;
     font-weight: 500;
-    transition: all 0.2s ease;
+    transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
     border: 1px solid var(--border);
     color: var(--text-muted);
     text-decoration: none;
@@ -454,7 +489,7 @@ const compactClass = showMotivation ? '' : 'context-actions-compact';
     }
 
     .context-menu {
-      width: min(22rem, 92vw);
+      width: min(22rem, calc(100vw - 2rem));
     }
   }
 </style>
