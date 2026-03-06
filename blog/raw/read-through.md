@@ -20,8 +20,6 @@
 이런 행태는 "능동적 독서"라는 개념으로 이전부터 존재해왔다. 독서에도 context가 필요하다. 항상 필요해 왔다.
 AI가 등장하면서 능동적 독서가 확장되고 context를 제공하는 방식이 달라졌을 뿐이다.
 
-
-article: https://x.com/trq212/article/2027463795355095314
 </raw>
 
 <modified>
@@ -30,4 +28,19 @@ article: https://x.com/trq212/article/2027463795355095314
 최소한 첫 문단은 직접 읽기로 했다. 좋은 글이라면 응당 첫 문단에서 주제와 분위기를 드러내니까.
 
 본론은 첫 문단과 다르다. 직접 읽어보되, 끝까지 원문만 고수하는 게 항상 좋은 건 아니다. 막히는 지점이 생기면 자신의 언어와 경험에 맞게 풀어서 받아들이면 된다. 이때 AI의 도움을 빌릴 수 있다.
+
+하지 말 것: 링크를 던지고 "요약해줘" 한 마디로 끝내기
+
+할 것: AI를 Learning Mode 설정(질문과 대화로 사고를 안내하는 모드, 자세한 내용은 댓글 링크 참고)
+- "나는 이런 배경을 가진 사람이다. 이 글의 A 개념을 X 상황에 적용해서 설명해줘."
+- "이 부분 논리 전개가 이해가 안 간다. 답을 바로 주지 말고, 막힌 부분을 말할 테니 같이 풀어보자."
+- "내가 이해한 게 맞는지 확인하고 싶다. 주관식 퀴즈를 내줘."
+- "XXX 영어 표현의 뉘앙스를 non-native 입장에서 설명해줘."
+
+새로운 이야기가 아니다. 자신의 배경과 경험이라는 context를 깔고 글을 받아들이는 것 — "능동적 독서"는 이전부터 있었다. 달라진 건 AI라는 대화 상대가 생기면서, 그 context를 공유하고 주고받을 수 있게 된 점이다.
+
+# Resources
+- 발견한 좋은 글(Lessons from Building Claude Code: Seeing like an Agent) : https://x.com/trq212/article/2027463795355095314
+- Claude의 Learning Mode 설명 : https://www.anthropic.com/news/introducing-claude-for-education
+
 </modified>
