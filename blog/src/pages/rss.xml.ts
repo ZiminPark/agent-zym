@@ -1,6 +1,6 @@
 import rss from '@astrojs/rss';
-import { getCollection } from 'astro:content';
 import type { APIContext } from 'astro';
+import { getCollection } from 'astro:content';
 
 export async function GET(context: APIContext) {
   const posts = await getCollection('posts', ({ data }) => {
@@ -13,7 +13,7 @@ export async function GET(context: APIContext) {
 
   return rss({
     title: 'agent-zym',
-    description: 'Stories, reflections, and notes on co-living with AI agents — how we work, think, and create together.',
+    description: 'Stories, reflections, and notes on co-living with agents — how we work, think, and create together.',
     site: context.site || 'https://zimmy.dev',
     items: sortedPosts.map((post) => ({
       title: post.data.title,

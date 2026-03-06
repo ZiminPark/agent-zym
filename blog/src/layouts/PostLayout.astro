@@ -19,7 +19,7 @@ const formattedDate = new Date(pubDate).toLocaleDateString('en-US', {
 ---
 
 <BaseLayout title={title} description={description} image={image} type="article" pubDate={pubDate} tags={tags} llmContextHref={llmContextHref}>
-  <article class="max-w-[40rem] mx-auto">
+  <article class="max-w-[40rem] lg:max-w-[48rem] mx-auto">
     <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'BlogPosting',

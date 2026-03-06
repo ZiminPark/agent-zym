@@ -58,6 +58,7 @@
   --text-muted: #5f564d;
   --text-subtle: #807568;
   --border: #d8d0c1;
+  --link: #6b4c38;
 }
 
 .dark {
@@ -68,6 +69,7 @@
   --text-muted: #c7baa8;
   --text-subtle: #9f9180;
   --border: #46403a;
+  --link: #c8a882;
 }
 
 html {
@@ -183,9 +185,6 @@ a {
 }
 
 .prose {
-  max-width: 40rem;
-  margin-left: auto;
-  margin-right: auto;
   color: var(--text);
   font-size: 1.05rem;
   line-height: 1.85;
@@ -231,10 +230,14 @@ a {
 }
 
 .prose a {
-  color: var(--color-accent);
+  color: var(--link);
   text-decoration: underline;
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
+}
+
+.prose a:hover {
+  color: var(--text);
 }
 
 .prose strong {
@@ -275,10 +278,16 @@ a {
   border: 1px solid var(--border);
 }
 
-.prose ul,
+.prose ul {
+  margin-bottom: 1.4rem;
+  padding-left: 1.45rem;
+  list-style-type: disc;
+}
+
 .prose ol {
   margin-bottom: 1.4rem;
   padding-left: 1.45rem;
+  list-style-type: decimal;
 }
 
 .prose li {
@@ -290,6 +299,14 @@ a {
   padding-left: 1rem;
   margin: 1.4rem 0;
   color: var(--text-muted);
+}
+
+.prose blockquote p {
+  margin-bottom: 0.6rem;
+}
+
+.prose blockquote p:last-child {
+  margin-bottom: 0;
 }
 
 .prose hr {
