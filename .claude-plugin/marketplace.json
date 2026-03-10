@@ -31,6 +31,11 @@
       "name": "post-refiner",
       "description": "Raw notes를 LinkedIn 포스트 + 블로그 글로 다듬는 협업형 글쓰기 스킬.",
       "source": "./plugins/post-refiner"
+    },
+    {
+      "name": "naver-land-search",
+      "description": "Search apartments on Naver Real Estate and collect key info.",
+      "source": "./plugins/naver-land-search"
     }
   ]
 }

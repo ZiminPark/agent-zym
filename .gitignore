@@ -31,3 +31,4 @@ blog/.astro/
 # Temporary files
 tmp/
 .vercel
+.playwright*
