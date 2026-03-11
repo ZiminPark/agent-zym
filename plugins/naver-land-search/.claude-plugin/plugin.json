@@ -1,6 +1,6 @@
 {
   "name": "naver-land-search",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "Search apartments on Naver Real Estate and collect key info (units, age, FAR, transactions).",
   "author": {
     "name": "ZiminPark",

@@ -2,7 +2,7 @@
 name: naver-land-search
 description: Search an apartment on Naver Real Estate and collect key information (units, age, FAR, recent transactions, 3-year high/low).
 argument-hint: "[apartment name]"
-allowed-tools: Bash
+allowed-tools: Bash, Skill
 ---
 
 # Naver Land Apartment Search
@@ -85,6 +85,7 @@ From the refreshed snapshot, extract:
 | 최근 실거래 날짜 | generic element with date after "최근 실거래" |
 | 3년 내 최고 | text after "3년 내 최고" (price + contract date) |
 | 3년 내 최저 | text after "3년 내 최저" (price + contract date) |
+| 출처 URL | The apartment detail page URL (e.g. `https://fin.land.naver.com/complexes/364`) — use the base path without query params |
 
 ### Step 7: Close Browser
 
@@ -92,7 +93,47 @@ From the refreshed snapshot, extract:
 playwright-cli close
 ```
 
-### Step 8: Report
+### Step 8: Write to Google Spreadsheet
+
+Use the `gws-sheets` skill to write collected data to a spreadsheet.
+
+**Spreadsheet ID:** `1DmclS3MGoM1uRNxG0iUo5KX86sYn7KNjP2lmVgpRYRs`
+
+1. Read the spreadsheet to check if a header row exists:
+
+```bash
+gws sheets +read --spreadsheet=1DmclS3MGoM1uRNxG0iUo5KX86sYn7KNjP2lmVgpRYRs --range="A1:K1"
+```
+
+2. If the header row is missing, append it first:
+
+```bash
+gws sheets +append --spreadsheet=1DmclS3MGoM1uRNxG0iUo5KX86sYn7KNjP2lmVgpRYRs --values '아파트명,주소,세대수,준공,용적률,면적,최근실거래금액,최근실거래일,3년내최고,3년내최저,출처URL'
+```
+
+3. Append the data row:
+
+```bash
+gws sheets +append --spreadsheet=1DmclS3MGoM1uRNxG0iUo5KX86sYn7KNjP2lmVgpRYRs --json-values '[["<아파트명>","<주소>","<세대수>","<준공>","<용적률>","<면적>","<최근실거래금액>","<최근실거래일>","<3년내최고>","<3년내최저>","<출처URL>"]]'
+```
+
+Column mapping:
+
+| Column | Value example |
+|--------|---------------|
+| 아파트명 | 대방대림 |
+| 주소 | 서울시 동작구 대방동 |
+| 세대수 | 1628세대 |
+| 준공 | 1993.11 (33년차) |
+| 용적률 | 272% |
+| 면적 | 전용 59.84㎡ (공급 84.47㎡) |
+| 최근실거래금액 | 14억 5000만원 |
+| 최근실거래일 | 2026.2.13 |
+| 3년내최고 | 14억 5000만원 (계약 26년 2월) |
+| 3년내최저 | 8억 4500만원 (계약 23년 6월) |
+| 출처URL | https://fin.land.naver.com/complexes/364 |
+
+### Step 9: Report
 
 Present the collected data in a structured table:
 
@@ -112,6 +153,8 @@ Present the collected data in a structured table:
 | 최근 실거래 | ...원 (YYYY.MM.DD) |
 | 3년 내 최고 | ...원 (계약 YY년 M월) |
 | 3년 내 최저 | ...원 (계약 YY년 M월) |
+
+Spreadsheet updated: https://docs.google.com/spreadsheets/d/1DmclS3MGoM1uRNxG0iUo5KX86sYn7KNjP2lmVgpRYRs
 ```
 
 ## Notes
@@ -120,3 +163,4 @@ Present the collected data in a structured table:
 - URL-based search (`?q=...`) is more reliable than typing into the search box.
 - If the browser is already open, close it first before opening a new headed session.
 - The skill defaults to 매매 (sale) trade type and 전용 59m² area. If the user specifies different preferences, adjust accordingly.
+- Google Sheets writing requires `gws` CLI with authenticated Google account.
