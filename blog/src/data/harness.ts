@@ -161,7 +161,14 @@ export const sections: HarnessSection[] = [
     gradient: "from-rose-600 to-pink-500",
     items: [
       {
-        text: "Verification 도구를 인지하고 개선해나간다.",
+        text: "Verification 도구를 인지하고 지속적으로 개선한다.",
+        subItems: [
+          "검증 단계에서 사람의 개입이 필수적인 지점과 시스템에 온전히 위임할 수 있는 지점을 명확히 분리한다.",
+          "단순 확인처럼 사람이 필요 없는 작업은 시스템 권한(e.g., Accessibility 권한)을 부여해 시스템이 직접 검증하게 한다.",
+          "Accessibility 권한을 부여하면 화면의 UI 요소를 읽고 클릭·타이핑할 수 있다.",
+          "예: PPTX 파일 생성 시 '파워포인트에서 파일이 오류 없이 열리는지'는 시스템이 검증하고",
+          "'슬라이드의 미적 완성도 판단'은 사람이 직접 시각적으로 확인하도록 역할을 분담한다.",
+        ],
       },
       {
         text: "Spec/ Plan 에 있는 내용 구현되었는지 검토하라고 시킨다.",
