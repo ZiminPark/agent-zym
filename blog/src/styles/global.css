@@ -59,6 +59,8 @@
   --text-subtle: #807568;
   --border: #d8d0c1;
   --link: #6b4c38;
+  --layout-max-width: 104rem;
+  --post-max-width: 62.4rem;
 }
 
 .dark {
@@ -126,6 +128,19 @@ a {
   border: 1px solid var(--border);
   border-radius: 0.75rem;
   background: var(--bg);
+}
+
+.site-shell {
+  width: 100%;
+  max-width: var(--layout-max-width);
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 2vw, 1.5rem);
+}
+
+.post-shell {
+  width: 100%;
+  max-width: var(--post-max-width);
+  margin-inline: auto;
 }
 
 .tag-pill {

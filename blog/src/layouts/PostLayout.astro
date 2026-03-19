@@ -44,7 +44,7 @@ const formattedDate = new Date(pubDate).toLocaleDateString('en-US', {
 ---
 
 <BaseLayout title={title} description={description} ogDescription={ogDescription} image={image} type="article" pubDate={pubDate} tags={tags} llmContextHref={llmContextHref}>
-  <article class="max-w-[40rem] lg:max-w-[48rem] mx-auto">
+  <article class="post-shell">
     <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'BlogPosting',
