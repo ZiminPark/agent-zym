@@ -11,6 +11,8 @@ web 개발만 하다가 desktop app에 도전.
 - 유저 사용 패턴, 로그 에러 등등을 수집해도 되는지 어떻게 수집할지
     - GA / Sentry 같은걸 사용할 수 있는지
 - 앱 설치는 어떻게 할지, 심사를 받을지
+- harness에서 verification 방식이 다름. 많이들 쓰는 도구에 제한이 생기는 경우가 생김. 예를 들어 playwright mcp.
+- 환경 변수 관리
 
 </raw>
 
