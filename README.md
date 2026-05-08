@@ -39,6 +39,14 @@ Generate study materials (Flashcards, Quiz, Infographic, Slide Deck) from URLs u
 - Skill instructions: `plugins/notebooklm-generator/skills/notebooklm-generator/SKILL.md`
 - Requires: Google account login in browser
 
+### `visual-summary` (Codex-only skill)
+
+Turn a PR, diff, markdown requirement, or implementation note into a compact teammate-facing visual summary.
+
+- Docs: `codex/skills/visual-summary/README.md`
+- Skill instructions: `codex/skills/visual-summary/SKILL.md`
+- Install with Codex skill installer, not Claude Code marketplace
+
 ## Install (Claude Code)
 
 ```text
@@ -54,9 +62,8 @@ Generate study materials (Flashcards, Quiz, Infographic, Slide Deck) from URLs u
 ```bash
 $skill-installer install https://github.com/ZiminPark/agent-zym/tree/main/plugins/linkedin-feed-brief/skills/linkedin-feed-brief
 $skill-installer install https://github.com/ZiminPark/agent-zym/tree/main/plugins/notebooklm-generator/skills/notebooklm-generator
-```
-
 $skill-installer install https://github.com/ZiminPark/agent-zym/tree/main/plugins/wedding-research/skills/wedding-research
+$skill-installer install https://github.com/ZiminPark/agent-zym/tree/main/codex/skills/visual-summary
 ```
 
 Restart Codex to pick up new skills.

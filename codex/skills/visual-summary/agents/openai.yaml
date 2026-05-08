@@ -1,0 +1,4 @@
+interface:
+  display_name: "PR Visual Summary"
+  short_description: "Turn a PR into a concise visual explanation."
+  default_prompt: "Summarize this PR visually: inspect the PR, extract the core change, propose a compact layout, then generate a presentation-ready image."
