@@ -31,12 +31,11 @@ After install, Claude Code will auto-route matching requests to the agent, or yo
 Make an HTML explainer for this RFC so PMs can understand it
 ```
 
-## Using this from Codex or other coding agents
+## Using this from Codex
 
-Codex supports native subagents via TOML files in `~/.codex/agents/` or project-scoped `.codex/agents/`. Two equivalent forms ship in this repo:
+Codex supports native subagents via TOML files in `~/.codex/agents/` or project-scoped `.codex/agents/`.
 
-- **Native Codex agent (recommended)** — `codex/agents/request-explainer-html.toml`. Explicit invocation: `Spawn the request-explainer-html agent to ...`.
-- **Codex skill** — `codex/skills/request-explainer-html/SKILL.md`. Auto-trigger via description matching.
+Use `codex/agents/request-explainer-html.toml`, then invoke it explicitly: `Spawn the request-explainer-html agent to ...`.
 
 See [`codex/agents/README.md`](../../codex/agents/README.md) for install steps.
 

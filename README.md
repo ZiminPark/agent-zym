@@ -46,7 +46,6 @@ Agent that turns a request, requirement, RFC, or concept into a clear, visual, s
 - Docs: `plugins/request-explainer-html/README.md`
 - Claude Code agent definition: `plugins/request-explainer-html/agents/request-explainer-html.md`
 - Codex agent (native subagent, TOML): `codex/agents/request-explainer-html.toml`
-- Codex skill (auto-trigger alternative): `codex/skills/request-explainer-html/SKILL.md`
 
 ### `visual-summary` (Codex-only skill)
 
@@ -74,7 +73,6 @@ $skill-installer install https://github.com/ZiminPark/agent-zym/tree/main/plugin
 $skill-installer install https://github.com/ZiminPark/agent-zym/tree/main/plugins/notebooklm-generator/skills/notebooklm-generator
 $skill-installer install https://github.com/ZiminPark/agent-zym/tree/main/plugins/wedding-research/skills/wedding-research
 $skill-installer install https://github.com/ZiminPark/agent-zym/tree/main/codex/skills/visual-summary
-$skill-installer install https://github.com/ZiminPark/agent-zym/tree/main/codex/skills/request-explainer-html
 ```
 
 Restart Codex to pick up new skills.
