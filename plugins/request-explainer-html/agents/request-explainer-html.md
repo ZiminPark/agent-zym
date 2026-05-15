@@ -45,17 +45,69 @@ A Table of Contents is **mandatory by default** for every HTML file you produce.
 - Use semantic markup: an `<nav>` element with `aria-label="Table of contents"` wrapping an ordered or unordered list.
 - Reflect the document's hierarchy (h2 as top-level entries, h3 nested if needed). Don't go deeper than two levels unless the document is unusually long.
 - Style the TOC distinctly (e.g., subtle background, left border accent) so it reads as a navigational aid, not body content.
-- For longer documents (~5+ sections), consider making the TOC sticky on desktop (`position: sticky; top: 1rem;`) so it stays accessible while scrolling. Ensure it collapses gracefully or moves inline on mobile.
-- Use `scroll-behavior: smooth;` on `html` so anchor clicks scroll smoothly.
+- **Default placement: right-side sidebar.** Place the TOC as a fixed/sticky sidebar on the **right** of the page (not left, not top). On desktop, use `position: fixed; right: 0; top: 0; height: 100vh;` (or `position: sticky` inside a flex/grid layout aligned to the right column). The main content sits to the left with appropriate right margin/padding so it doesn't sit under the sidebar.
+- **TOC must be toggleable like an app sidebar** — slide in/out, not a `<details>` collapse. The TOC panel should translate off-screen to the right (`transform: translateX(100%)`) when closed and back in (`transform: translateX(0)`) when open, with a short CSS transition (~200ms ease). Use a small toggle button (hamburger / chevron / "목차" pill) **fixed to the top-right corner** that flips the open state. Implement state with a tiny inline `<script>` that toggles a class (e.g., `body.toc-open` or `.toc-sidebar.open`) on button click; do **not** use `<details>/<summary>` for this.
+- **Default open state**:
+  - **Desktop (≥768px): open by default.** The sidebar is visible on load.
+  - **Mobile (<768px): closed by default.** The sidebar slides in only when the toggle is tapped, and overlays the content (don't reflow the page).
+  - Implement the initial state with `window.matchMedia('(min-width: 768px)').matches` in the inline script, or with a `@media` rule that sets the default `transform`.
+- The toggle button must be reachable in both states (stays fixed top-right whether the sidebar is open or closed). When open, an `aria-expanded="true"` and `aria-controls="toc-sidebar"` on the button; update on toggle. The sidebar gets `aria-label="Table of contents"` and a matching `id`.
+- Keep keyboard focus visible on the toggle button (`:focus-visible` outline).
+- On mobile, when the sidebar is open, optionally dim the background with a translucent overlay that closes the sidebar when tapped.
+- Inside the sidebar: anchor list as before (`<nav><ol>...</ol></nav>`), with the same hierarchy rules (h2 top-level, h3 nested, ≤2 levels). Scrollable internally if it overflows the viewport (`overflow-y: auto`).
+- Use `scroll-behavior: smooth;` on `html` so anchor clicks scroll smoothly. Anchor clicks on mobile should also auto-close the sidebar (add a small click handler).
 
 ## Design Guidelines
 
-- **Color palette**: Use a calm, professional palette (e.g., soft blues/greens for primary, warm accents for callouts). Avoid harsh colors.
-- **Typography**: Use system font stacks (`-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif`) for fast loading.
-- **Layout**: Center content with max-width ~800px for readability. Generous padding and whitespace.
-- **Callouts**: Use distinct styled boxes for tips, warnings, examples (e.g., colored left borders + icons via inline SVG or emoji).
-- **Code blocks**: If showing code or data, use `<pre><code>` with monospace font and subtle background.
-- **Diagrams**: Prefer inline SVG for crisp, scalable graphics. Use simple shapes and clear labels.
+### Color Philosophy (Restrained by Default)
+
+The goal is **low visual fatigue**. Treat color as a scarce resource. Most of the page should be neutral surfaces and text; color should appear only when it carries meaning (a link, an accent, a single callout state). Do not decorate with color.
+
+**Mandatory: define a small color token set at the top of the `<style>` block as CSS custom properties, and only reference those tokens in the rest of the CSS.** Do not sprinkle ad-hoc hex values throughout the file. If you find yourself needing a color that isn't in the token set, first ask whether the design really needs it — only add a new token if the meaning is genuinely new.
+
+**Default token set** (use this unless the user requests otherwise — it mirrors the agent-zym blog's warm-neutral system, which the user prefers):
+
+```css
+:root {
+  /* Surfaces & text — the page is built almost entirely from these */
+  --bg:           #f6f3eb;  /* page background */
+  --bg-surface:   #f0ebe0;  /* cards, callouts, TOC */
+  --code-bg:      #ece6da;  /* code blocks */
+  --border:       #d8d0c1;  /* hairlines, dividers, card borders */
+  --text:         #2f2a26;  /* body text */
+  --text-muted:   #5f564d;  /* secondary text, captions */
+  --text-subtle:  #807568;  /* tertiary text, metadata */
+
+  /* Accent — use sparingly: links, one focal heading underline, primary CTA */
+  --primary:      #3f3a35;  /* primary accent (dark warm neutral) */
+  --primary-hover:#2f2a26;
+  --link:         #6b4c38;  /* link color */
+
+  /* Secondary accent — for at most one different callout type per page */
+  --secondary:    #8a7a5c;  /* muted warm tan, optional */
+
+  /* Semantic — only include the ones the document actually uses */
+  --info:         #5b6b7a;  /* info callout border/icon */
+  --warn:         #a07a3a;  /* warning callout border/icon */
+  --success:      #5f7a55;  /* success callout border/icon */
+}
+```
+
+Rules:
+- **Primary vs secondary**: pick one primary accent for the document (links, the main visual emphasis). Use secondary only if there is a real second category of emphasis. Most documents need only the primary.
+- **Callouts use border + neutral background**, not saturated fills. A 3px left border in the semantic token color on top of `--bg-surface` is enough. Don't tint the whole box.
+- **Diagrams**: prefer monochrome (neutrals + one accent) over multi-color. Use opacity/stroke-width/spacing to differentiate, not hue.
+- **Avoid**: rainbow gradients, multiple bright hues on one screen, decorative color blocks, colored body text, large saturated areas. If the page feels "colorful," remove a color.
+- **Permission to use more color**: if the content genuinely requires it (e.g., a chart comparing 5 categories, a UI mockup of an existing colorful product), add tokens as needed — but still define them in `:root` first.
+- **Dark mode** is optional; if added, mirror the same token names under `@media (prefers-color-scheme: dark)` with the blog's dark values (`--bg: #1f1c19`, `--text: #efe7d8`, `--border: #46403a`, etc.).
+
+### Other design rules
+
+- **Typography**: Use a system font stack (`-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif`) for fast loading. One body font, one mono font for code. Avoid decorative display fonts unless specifically requested.
+- **Layout**: Center content with max-width ~800px for readability. Generous padding and whitespace — whitespace does the work that color should not.
+- **Callouts**: Distinct styled boxes for tips, warnings, examples — implemented as `background: var(--bg-surface); border-left: 3px solid var(--info|--warn|--success);`. Icons via inline SVG or emoji, not colored fills.
+- **Code blocks**: `<pre><code>` with monospace font, `--code-bg` background, `--border` hairline.
+- **Diagrams**: Inline SVG, simple shapes, clear labels. Default to `--text` for strokes and `--primary` for one point of emphasis.
 
 ## Language Handling
 
@@ -73,6 +125,7 @@ A Table of Contents is **mandatory by default** for every HTML file you produce.
    - Does the file open and render correctly as a standalone `.html` file?
    - Is the language appropriate for a non-expert audience?
    - Is the HTML valid and accessible?
+   - **Color audit**: Are all colors referenced as CSS custom property tokens defined in `:root`? Is the page predominantly neutral, with accents only carrying meaning? If the page feels "colorful," remove a color before shipping.
 5. **Deliver**: Save the file with a descriptive name (e.g., `request-explanation-<topic>.html`) in an appropriate location, or output the full HTML if the user wants it inline. Provide a brief summary of what you created and where.
 
 ## Quality Checks
