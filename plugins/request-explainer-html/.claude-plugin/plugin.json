@@ -1,0 +1,5 @@
+{
+  "name": "request-explainer-html",
+  "version": "1.0.0",
+  "description": "Agent that turns a request, requirement, or concept into a clear, visual, single-file HTML explanation."
+}

@@ -39,6 +39,14 @@ Generate study materials (Flashcards, Quiz, Infographic, Slide Deck) from URLs u
 - Skill instructions: `plugins/notebooklm-generator/skills/notebooklm-generator/SKILL.md`
 - Requires: Google account login in browser
 
+### `request-explainer-html`
+
+Agent that turns a request, requirement, RFC, or concept into a clear, visual, single-file HTML explainer that non-experts can read on their own.
+
+- Docs: `plugins/request-explainer-html/README.md`
+- Agent definition: `plugins/request-explainer-html/agents/request-explainer-html.md`
+- Codex equivalent skill: `codex/skills/request-explainer-html/SKILL.md`
+
 ### `visual-summary` (Codex-only skill)
 
 Turn a PR, diff, markdown requirement, or implementation note into a compact teammate-facing visual summary.
@@ -55,6 +63,7 @@ Turn a PR, diff, markdown requirement, or implementation note into a compact tea
 /plugins install terminal-notifier-hook
 /plugins install notebooklm-generator
 /plugins install wedding-research
+/plugins install request-explainer-html
 ```
 
 ## Install skills (Codex)
@@ -64,6 +73,7 @@ $skill-installer install https://github.com/ZiminPark/agent-zym/tree/main/plugin
 $skill-installer install https://github.com/ZiminPark/agent-zym/tree/main/plugins/notebooklm-generator/skills/notebooklm-generator
 $skill-installer install https://github.com/ZiminPark/agent-zym/tree/main/plugins/wedding-research/skills/wedding-research
 $skill-installer install https://github.com/ZiminPark/agent-zym/tree/main/codex/skills/visual-summary
+$skill-installer install https://github.com/ZiminPark/agent-zym/tree/main/codex/skills/request-explainer-html
 ```
 
 Restart Codex to pick up new skills.

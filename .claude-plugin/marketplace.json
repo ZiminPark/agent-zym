@@ -1,6 +1,6 @@
 {
   "name": "agent-zym",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "ZiminPark's Claude Code plugin marketplace.",
   "owner": {
     "name": "ZiminPark",
@@ -36,6 +36,11 @@
       "name": "naver-land-search",
       "description": "Search apartments on Naver Real Estate and collect key info.",
       "source": "./plugins/naver-land-search"
+    },
+    {
+      "name": "request-explainer-html",
+      "description": "Agent that turns a request, spec, or concept into a clear single-file HTML explainer.",
+      "source": "./plugins/request-explainer-html"
     }
   ]
 }

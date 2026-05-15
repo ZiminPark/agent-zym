@@ -1,0 +1,4 @@
+interface:
+  display_name: "Request Explainer HTML"
+  short_description: "Turn a request or spec into a single-file HTML explainer."
+  default_prompt: "Produce a single self-contained HTML file that explains this request for a non-expert reader: TL;DR, problem framing, clear breakdown, inline-SVG diagrams, concrete examples, and an optional glossary/FAQ."
