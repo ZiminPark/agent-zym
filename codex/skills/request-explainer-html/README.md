@@ -4,6 +4,8 @@ Codex 전용 `request-explainer-html` skill입니다. 요청, 요구사항, RFC,
 
 이 디렉터리는 Claude Code marketplace plugin이 아니라 Codex의 skill installer로 직접 설치하는 용도입니다. Claude Code 사용자는 [`plugins/request-explainer-html`](../../../plugins/request-explainer-html)에 있는 agent 버전을 설치하면 됩니다.
 
+> **Codex에서 정식 subagent로 쓰고 싶다면** [`codex/agents/request-explainer-html.toml`](../../agents/request-explainer-html.toml)을 `~/.codex/agents/`에 복사하세요. Skill은 description 매칭으로 자동 트리거되는 반면, agent는 `Spawn the request-explainer-html agent ...` 식으로 명시적으로 호출합니다.
+
 ## When this skill should run
 
 Use `request-explainer-html` when you want Codex to:

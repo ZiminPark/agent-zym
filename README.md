@@ -44,8 +44,9 @@ Generate study materials (Flashcards, Quiz, Infographic, Slide Deck) from URLs u
 Agent that turns a request, requirement, RFC, or concept into a clear, visual, single-file HTML explainer that non-experts can read on their own.
 
 - Docs: `plugins/request-explainer-html/README.md`
-- Agent definition: `plugins/request-explainer-html/agents/request-explainer-html.md`
-- Codex equivalent skill: `codex/skills/request-explainer-html/SKILL.md`
+- Claude Code agent definition: `plugins/request-explainer-html/agents/request-explainer-html.md`
+- Codex agent (native subagent, TOML): `codex/agents/request-explainer-html.toml`
+- Codex skill (auto-trigger alternative): `codex/skills/request-explainer-html/SKILL.md`
 
 ### `visual-summary` (Codex-only skill)
 
@@ -77,3 +78,15 @@ $skill-installer install https://github.com/ZiminPark/agent-zym/tree/main/codex/
 ```
 
 Restart Codex to pick up new skills.
+
+## Install agents (Codex)
+
+Native Codex subagents live in `~/.codex/agents/` (personal) or `.codex/agents/` (project). Drop the TOML into one of those directories.
+
+```bash
+mkdir -p ~/.codex/agents
+curl -fsSL -o ~/.codex/agents/request-explainer-html.toml \
+  https://raw.githubusercontent.com/ZiminPark/agent-zym/main/codex/agents/request-explainer-html.toml
+```
+
+Invoke from a prompt, e.g. `Spawn the request-explainer-html agent to produce an HTML explainer for requirements/onboarding-flow.md`. See [`codex/agents/README.md`](./codex/agents/README.md) for details.

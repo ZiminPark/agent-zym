@@ -33,7 +33,12 @@ Make an HTML explainer for this RFC so PMs can understand it
 
 ## Using this from Codex or other coding agents
 
-Codex does not have a direct "subagent" primitive, so the same behavior is shipped as a Codex skill. See [`codex/skills/request-explainer-html`](../../codex/skills/request-explainer-html) for installation.
+Codex supports native subagents via TOML files in `~/.codex/agents/` or project-scoped `.codex/agents/`. Two equivalent forms ship in this repo:
+
+- **Native Codex agent (recommended)** — `codex/agents/request-explainer-html.toml`. Explicit invocation: `Spawn the request-explainer-html agent to ...`.
+- **Codex skill** — `codex/skills/request-explainer-html/SKILL.md`. Auto-trigger via description matching.
+
+See [`codex/agents/README.md`](../../codex/agents/README.md) for install steps.
 
 ## Files
 
