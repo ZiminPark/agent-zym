@@ -47,6 +47,12 @@ Agent that turns a request, requirement, RFC, or concept into a clear, visual, s
 - Claude Code agent definition: `plugins/request-explainer-html/agents/request-explainer-html.md`
 - Codex agent (native subagent, TOML): `codex/agents/request-explainer-html.toml`
 
+### `pr-review-guide`
+
+Build a single self-contained HTML page that walks a cold reviewer from a PR's intended outcome and problem, through its user flow and key decisions, to the overall structure, ending with a comprehension quiz on a separate screen.
+
+- Skill instructions: `plugins/pr-review-guide/skills/pr-review-guide/SKILL.md`
+
 ### `visual-summary` (Codex-only skill)
 
 Turn a PR, diff, markdown requirement, or implementation note into a compact teammate-facing visual summary.
@@ -64,6 +70,7 @@ Turn a PR, diff, markdown requirement, or implementation note into a compact tea
 /plugins install notebooklm-generator
 /plugins install wedding-research
 /plugins install request-explainer-html
+/plugins install pr-review-guide
 ```
 
 ## Install skills (Codex)

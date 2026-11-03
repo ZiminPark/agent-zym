@@ -1,0 +1,19 @@
+{
+  "name": "pr-review-guide",
+  "version": "1.0.0",
+  "description": "Build a single-file HTML explainer that walks a cold reviewer through a PR's outcome, flow, decisions and structure, ending with a comprehension quiz.",
+  "author": {
+    "name": "ZiminPark",
+    "url": "https://github.com/ZiminPark"
+  },
+  "keywords": [
+    "pr",
+    "code-review",
+    "explainer",
+    "html",
+    "quiz"
+  ],
+  "skills": [
+    "./skills/pr-review-guide"
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "name": "agent-zym",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "ZiminPark's Claude Code plugin marketplace.",
   "owner": {
     "name": "ZiminPark",
@@ -41,6 +41,11 @@
       "name": "request-explainer-html",
       "description": "Agent that turns a request, spec, or concept into a clear single-file HTML explainer.",
       "source": "./plugins/request-explainer-html"
+    },
+    {
+      "name": "pr-review-guide",
+      "description": "Build a single-file HTML PR review explainer with a comprehension quiz.",
+      "source": "./plugins/pr-review-guide"
     }
   ]
 }

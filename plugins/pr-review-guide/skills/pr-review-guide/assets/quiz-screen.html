@@ -1,0 +1,231 @@
+<!--
+  Quiz-screen boilerplate for PR review guide artifacts.
+
+  What it provides:
+  - Hash routing: `#quiz` hides the document view and shows a dedicated quiz screen;
+    any other hash returns to the document and scrolls to that section.
+  - One question at a time, prev/next buttons, per-question dot navigation
+    (unanswered / correct / wrong), lock-after-answer with an instant explanation,
+    and a final score screen with "review questions" and "reset" actions.
+
+  How to use:
+  - Wrap the document in <div id="view-doc"> and place the quiz block beside it.
+  - The nav's quiz link is just <a href="#quiz">.
+  - Fill QUESTIONS with the page's own content; `a` is the index of the correct option.
+  - The CSS references the page's design tokens (--bg, --surface, --ink, --muted,
+    --line, --accent, --accent-soft, --red, --red-soft, --code-bg). Keep the class
+    names, restyle through the tokens — don't fork the mechanics.
+-->
+
+<style>
+  #view-quiz { display: none; }
+  body.quiz-mode #view-doc { display: none; }
+  body.quiz-mode #view-quiz { display: block; }
+  .quiz-screen { max-width: 42rem; margin: 0 auto; padding: 2.6rem 1.25rem 5rem; }
+  .quiz-screen .back {
+    display: inline-block;
+    font-size: 0.85rem; font-weight: 700;
+    color: var(--muted); text-decoration: none;
+    margin-bottom: 1.6rem;
+  }
+  .quiz-screen .back:hover { color: var(--ink); }
+
+  #quiz-box {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 1.5rem 1.5rem 1.25rem;
+  }
+  .q-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+  .q-progress { font-size: 0.82rem; font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .q-dots { display: flex; gap: 0.35rem; }
+  .q-dots button {
+    width: 0.62rem; height: 0.62rem;
+    border-radius: 50%;
+    border: 1px solid var(--muted);
+    background: transparent; padding: 0; cursor: pointer;
+  }
+  .q-dots button.cur { border-color: var(--ink); border-width: 2px; }
+  .q-dots button.ok { background: var(--accent); border-color: var(--accent); }
+  .q-dots button.bad { background: var(--red); border-color: var(--red); }
+  .q-ctx { font-size: 0.88rem; color: var(--muted); line-height: 1.6; margin: 0 0 0.7rem; padding: 0.6rem 0.8rem; border-left: 3px solid var(--line); }
+  .q-text { font-size: 1.05rem; font-weight: 700; line-height: 1.55; margin: 0 0 1rem; text-wrap: balance; }
+  .q-opts { display: flex; flex-direction: column; gap: 0.5rem; }
+  .q-opts button {
+    text-align: left; font: inherit; font-size: 0.95rem; line-height: 1.55;
+    color: var(--ink); background: var(--bg);
+    border: 1px solid var(--line); border-radius: 8px;
+    padding: 0.6rem 0.9rem; cursor: pointer;
+  }
+  .q-opts button:hover:not(:disabled) { border-color: var(--muted); }
+  .q-opts button:disabled { cursor: default; }
+  .q-opts button.correct { border-color: var(--accent); background: var(--accent-soft); }
+  .q-opts button.wrong { border-color: var(--red); background: var(--red-soft); }
+  .q-explain {
+    margin-top: 1rem; padding: 0.85rem 1rem; border-radius: 8px;
+    background: var(--code-bg); font-size: 0.92rem; line-height: 1.65;
+  }
+  .q-explain b { color: var(--accent); }
+  .q-explain b.no { color: var(--red); }
+  .q-nav { display: flex; justify-content: space-between; margin-top: 1.25rem; }
+  .q-nav button {
+    font: inherit; font-size: 0.88rem; font-weight: 700;
+    color: var(--ink); background: transparent;
+    border: 1px solid var(--line); border-radius: 8px;
+    padding: 0.45rem 1.1rem; cursor: pointer;
+  }
+  .q-nav button:hover:not(:disabled) { border-color: var(--muted); }
+  .q-nav button:disabled { opacity: 0.35; cursor: default; }
+  .q-nav button.primary { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+  .q-result { text-align: center; padding: 1.5rem 0 0.5rem; }
+  .q-result .score { font-size: 2.4rem; font-weight: 800; font-variant-numeric: tabular-nums; margin: 0.2rem 0 0.6rem; }
+  .q-result p { color: var(--muted); font-size: 0.95rem; }
+</style>
+
+<!-- Beside <div id="view-doc"> (which wraps the whole document): -->
+<div id="view-quiz">
+  <div class="quiz-screen">
+    <a class="back" href="#last-doc-section">← 리뷰 자료로 돌아가기</a>
+    <h2>이해도 퀴즈</h2>
+    <div id="quiz-box"></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  /* View routing: #quiz is its own screen. */
+  function applyRoute() {
+    const isQuiz = location.hash === "#quiz";
+    document.body.classList.toggle("quiz-mode", isQuiz);
+    if (isQuiz) {
+      window.scrollTo(0, 0);
+    } else if (location.hash) {
+      const el = document.querySelector(location.hash);
+      if (el) el.scrollIntoView();
+    }
+  }
+  window.addEventListener("hashchange", applyRoute);
+  applyRoute();
+
+  /* Fill with the page's content. `a` = index of the correct option.
+     `why` should teach the reasoning, since wrong options are plausible misreadings.
+     `ctx` (optional) is the one- or two-sentence background a reader who only skimmed
+     the page needs before the question makes sense. */
+  const QUESTIONS = [
+    {
+      ctx: "배경: 이 문항이 전제하는 사실 한두 문장.",
+      q: "질문 텍스트?",
+      opts: ["보기 1", "보기 2 (정답)", "보기 3", "보기 4"],
+      a: 1,
+      why: "해설 — 왜 이게 답이고 다른 보기는 어떤 오독인지."
+    }
+  ];
+
+  const state = { idx: 0, picked: Array(QUESTIONS.length).fill(null), done: false };
+  const box = document.getElementById("quiz-box");
+
+  function score() {
+    return state.picked.filter((p, i) => p === QUESTIONS[i].a).length;
+  }
+  function answeredCount() {
+    return state.picked.filter(p => p !== null).length;
+  }
+
+  function render() {
+    if (state.done) { renderResult(); return; }
+    const i = state.idx;
+    const q = QUESTIONS[i];
+    const picked = state.picked[i];
+
+    const dots = QUESTIONS.map((_, d) => {
+      const p = state.picked[d];
+      const cls = [
+        d === i ? "cur" : "",
+        p === null ? "" : (p === QUESTIONS[d].a ? "ok" : "bad")
+      ].join(" ").trim();
+      return `<button class="${cls}" data-dot="${d}" aria-label="${d + 1}번 문제로 이동"></button>`;
+    }).join("");
+
+    const opts = q.opts.map((o, oi) => {
+      let cls = "";
+      if (picked !== null) {
+        if (oi === q.a) cls = "correct";
+        else if (oi === picked) cls = "wrong";
+      }
+      return `<button class="${cls}" data-opt="${oi}" ${picked !== null ? "disabled" : ""}>${o}</button>`;
+    }).join("");
+
+    const explain = picked === null ? "" :
+      `<div class="q-explain">${picked === q.a ? "<b>정답.</b>" : "<b class='no'>오답.</b>"} ${q.why}</div>`;
+
+    const allDone = answeredCount() === QUESTIONS.length;
+    const nextLabel = (i === QUESTIONS.length - 1)
+      ? (allDone ? "결과 보기" : "다음 →")
+      : "다음 →";
+
+    box.innerHTML = `
+      <div class="q-meta">
+        <span class="q-progress">${i + 1} / ${QUESTIONS.length}</span>
+        <div class="q-dots">${dots}</div>
+      </div>
+      ${q.ctx ? `<p class="q-ctx">${q.ctx}</p>` : ""}
+      <p class="q-text">${q.q}</p>
+      <div class="q-opts">${opts}</div>
+      ${explain}
+      <div class="q-nav">
+        <button data-nav="prev" ${i === 0 ? "disabled" : ""}>← 이전</button>
+        <button data-nav="next" class="${(i === QUESTIONS.length - 1 && allDone) ? "primary" : ""}"
+          ${(i === QUESTIONS.length - 1 && !allDone) ? "disabled" : ""}>${nextLabel}</button>
+      </div>`;
+  }
+
+  function renderResult() {
+    const s = score();
+    const msg = s === QUESTIONS.length
+      ? "전부 맞혔다 — 리뷰 시작할 준비 완료."
+      : s >= QUESTIONS.length * 0.7 ? "핵심은 잡혔다. 틀린 문항의 해설만 다시 훑고 리뷰하면 된다."
+      : "틀린 문항이 가리키는 절을 다시 읽어보길 권한다.";
+    box.innerHTML = `
+      <div class="q-result">
+        <p class="q-progress">이해도 점검 결과</p>
+        <div class="score">${s} / ${QUESTIONS.length}</div>
+        <p>${msg}</p>
+        <div class="q-nav" style="justify-content:center; gap:0.6rem;">
+          <button data-nav="review">문항 다시 보기</button>
+          <button data-nav="reset" class="primary">처음부터 다시 풀기</button>
+        </div>
+      </div>`;
+  }
+
+  box.addEventListener("click", (e) => {
+    const t = e.target.closest("button");
+    if (!t) return;
+    if (t.dataset.opt !== undefined && state.picked[state.idx] === null) {
+      state.picked[state.idx] = Number(t.dataset.opt);
+      render();
+    } else if (t.dataset.dot !== undefined) {
+      state.idx = Number(t.dataset.dot);
+      state.done = false;
+      render();
+    } else if (t.dataset.nav === "prev") {
+      state.idx = Math.max(0, state.idx - 1);
+      render();
+    } else if (t.dataset.nav === "next") {
+      if (state.idx === QUESTIONS.length - 1) { state.done = true; }
+      else { state.idx += 1; }
+      render();
+    } else if (t.dataset.nav === "review") {
+      state.done = false;
+      state.idx = 0;
+      render();
+    } else if (t.dataset.nav === "reset") {
+      state.picked = Array(QUESTIONS.length).fill(null);
+      state.idx = 0;
+      state.done = false;
+      render();
+    }
+  });
+
+  render();
+})();
+</script>
