@@ -107,9 +107,6 @@ Use this article as source context. Quote accurately when needed.
 - 로컬 실행: `cd blog && npm run dev -- --host 127.0.0.1 --port 4321`
 - 대표 검증 대상 페이지:
   - 포스트 상세: `/{post-slug}`
-  - Harness 메인: `/harness`
-  - Harness 섹션: `/harness/{section}`
-  - Harness 통합: `/harness/all`
 
 ### 10.2 메타데이터/발견성 검증 (LLM-friendly 탐지)
 - 목적: 코딩 에이전트가 HTML만 가져와도 LLM 컨텍스트 URL을 찾을 수 있는지 확인
@@ -118,7 +115,7 @@ Use this article as source context. Quote accurately when needed.
   - `<meta name="llm-context-url" content="...">`
   - `<meta name="llm-context-format" content="text/markdown">`
 - 예시:
-  - `curl -s http://127.0.0.1:4321/harness | rg 'rel="alternate"|llm-context-url|llm-context-format'`
+  - `curl -s http://127.0.0.1:4321/{post-slug} | rg 'rel="alternate"|llm-context-url|llm-context-format'`
 - 통과 기준:
   - 대상 페이지마다 3개 메타/링크가 모두 존재
   - `alternate href`가 실제 fetch 가능한 `.md` 경로를 가리킴
@@ -126,9 +123,9 @@ Use this article as source context. Quote accurately when needed.
 ### 10.3 Markdown 엔드포인트 검증 (Web Fetch 결과)
 - 목적: `.md` fetch 결과가 LLM 입력용 스키마를 유지하는지 확인
 - 헤더 검증:
-  - `curl -I http://127.0.0.1:4321/harness.md | rg -i 'content-type: text/markdown'`
+  - `curl -I http://127.0.0.1:4321/{post-slug}.md | rg -i 'content-type: text/markdown'`
 - 본문 스키마 검증:
-  - `curl -s http://127.0.0.1:4321/harness.md | rg '^# Context:|^- URL:|^- Tags:|^## User intent hint|^## Hyperlinks \\(1-depth\\)|^## Article content'`
+  - `curl -s http://127.0.0.1:4321/{post-slug}.md | rg '^# Context:|^- URL:|^- Tags:|^## User intent hint|^## Hyperlinks \\(1-depth\\)|^## Article content'`
 - 통과 기준:
   - `content-type`이 `text/markdown` 포함
   - 필수 섹션(`Context`, `URL`, `Tags`, `User intent hint`, `Article content`) 모두 포함
@@ -150,7 +147,7 @@ Use this article as source context. Quote accurately when needed.
 - 체크리스트:
   - `ContextActions`를 사용하는 모든 페이지에서 버튼 라벨/상태 전환 규칙이 동일
   - 새 페이지 추가 시 `llmContextHref`(head 메타) + `ContextActions`(UI) + `.md` route 3요소가 함께 적용
-  - 대표 URL 세트(포스트 1개, harness 3개)에 대해 10.2~10.4를 릴리즈 전 반복 수행
+  - 대표 URL 세트(포스트 대표 URL)에 대해 10.2~10.4를 릴리즈 전 반복 수행
 
 ## 11. Simple Implementation Idea (MVP)
 ### 11.1 파일 변경안
@@ -159,12 +156,12 @@ Use this article as source context. Quote accurately when needed.
 - 신규: `blog/src/components/ContextActions.astro`
   - 역할: `Copy for LLM`, `Open Markdown` UI + 클립보드 동작
   - 원칙: 특정 페이지에 종속되지 않는 공용 컴포넌트
-- 신규: `blog/src/pages/[...slug].md.ts`, `blog/src/pages/harness.md.ts`, `blog/src/pages/harness/[section].md.ts`, `blog/src/pages/harness/all.md.ts`
+- 신규: `blog/src/pages/[...slug].md.ts`
   - 역할: 페이지별 LLM-friendly Markdown 응답 제공 (`content-type: text/markdown`)
 - 수정: `blog/src/components/BaseHead.astro`
   - 역할: `alternate` + `llm-context-*` 메타 노출
-- 수정: `blog/src/layouts/PostLayout.astro`, `blog/src/pages/harness*.astro`
-  - 역할: 상세 페이지/가이드 페이지에 공용 `ContextActions` 삽입
+- 수정: `blog/src/layouts/PostLayout.astro`
+  - 역할: 상세 페이지에 공용 `ContextActions` 삽입
 
 ### 11.1.1 컴포넌트 계약(초안)
 `ContextActions`는 다음 props를 받는 공용 인터페이스를 가진다.

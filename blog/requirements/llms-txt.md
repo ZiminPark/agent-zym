@@ -41,8 +41,7 @@
 ### MVP
 - `GET /llms.txt` 제공
 - 섹션별 주요 링크 노출:
-  - Core (홈, harness 메인/통합)
-  - Harness Sections
+  - Core (홈)
   - Recent Posts (발행일 기준 최신 N개)
 - 각 링크는 가능하면 `.md` 엔드포인트를 우선 표기
 
@@ -66,8 +65,6 @@
 
 ## Core
 - [Home](https://zimmy.dev/): Human-facing entry
-- [Harness](https://zimmy.dev/harness.md): Workflow guide context
-- [Harness Full](https://zimmy.dev/harness/all.md): Full guide context
 
 ## Recent Posts
 - [Post Title](https://zimmy.dev/{slug}.md): one-line summary
@@ -76,15 +73,11 @@
 규칙:
 - 링크는 절대 URL 사용 (`https://zimmy.dev/...`)
 - 한 줄 설명은 120자 이내 권장
-- 섹션명은 고정 집합(Core, Harness Sections, Recent Posts)
+- 섹션명은 고정 집합(Core, Recent Posts)
 
 ## 7. Information Architecture
 - Core:
   - `/`
-  - `/harness.md`
-  - `/harness/all.md`
-- Harness Sections:
-  - `/harness/{section}.md` 전부
 - Recent Posts:
   - posts 컬렉션에서 `draft !== true`, `pubDate` 내림차순 상위 N개
 
@@ -145,7 +138,7 @@
   - 역할: 통합 문서 반환
 
 ### 11.2 생성 전략
-- posts 컬렉션 + harness 데이터를 조합해 정적 생성
+- posts 컬렉션으로 정적 생성
 - URL은 모두 `Astro.site` 기반 절대 경로
 - 설명 텍스트는 `description/summary`에서 1줄로 정규화
 
